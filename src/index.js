@@ -1,10 +1,8 @@
-const defaultAwesomeFunction = (name) => {
-  const returnStr = `I am the Default Awesome Function, fellow comrade! - ${name}`;
-  return returnStr;
-};
+import DrupalEntity, { AuthorizeRequest } from './DrupalEntity'
+import { RequiredFieldsFromFieldConfigResponse } from './RequiredFields'
 
-const awesomeFunction = () => 'I am just an Awesome Function';
-
-export default defaultAwesomeFunction;
-
-export { awesomeFunction };
+export default {
+  DrupalEntity,
+  AuthorizeRequest,
+  RequiredFieldsFromFieldConfigResponse,
+}
