@@ -1,5 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DrupalEntity adds authorization headers 1`] = `
+Request {
+  "agent": undefined,
+  "compress": true,
+  "counter": 0,
+  "follow": 20,
+  "size": 0,
+  "timeout": 0,
+  Symbol(Body internals): Object {
+    "body": "{\\"data\\":{\\"type\\":\\"node--article\\"}}",
+    "disturbed": false,
+    "error": null,
+  },
+  Symbol(Request internals): Object {
+    "headers": Headers {
+      Symbol(map): Object {
+        "Accept": Array [
+          "application/vnd.api+json",
+        ],
+        "Authorization": Array [
+          "Basic abc==",
+        ],
+        "Content-Type": Array [
+          "application/vnd.api+json",
+        ],
+      },
+    },
+    "method": "POST",
+    "parsedURL": Url {
+      "auth": null,
+      "hash": null,
+      "host": null,
+      "hostname": null,
+      "href": "/jsonapi/node/article",
+      "path": "/jsonapi/node/article",
+      "pathname": "/jsonapi/node/article",
+      "port": null,
+      "protocol": null,
+      "query": null,
+      "search": null,
+      "slashes": null,
+    },
+    "redirect": "follow",
+    "signal": null,
+  },
+}
+`;
+
 exports[`DrupalEntity parses required fields into DrupalEntity request 1`] = `
 Request {
   "agent": undefined,

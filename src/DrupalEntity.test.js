@@ -1,4 +1,4 @@
-import DrupalEntity, { DrupalEntityFromResponse, DrupalEntityFromSerializedRequiredFields } from './DrupalEntity'
+import DrupalEntity, { AuthorizeRequest, DrupalEntityFromResponse, DrupalEntityFromSerializedRequiredFields } from './DrupalEntity'
 
 describe('DrupalEntity', () => {
   it('parses response into DrupalEntity request', () => {
@@ -27,5 +27,10 @@ describe('DrupalEntity', () => {
   it('serializes get request to retrieve field config for entity', () => {
     const entity = new DrupalEntity('node', 'article')
     expect(entity.toFieldConfigRequest()).toMatchSnapshot()
+  })
+
+  it('adds authorization headers', () => {
+    const entity = new DrupalEntity('node', 'article')
+    expect(AuthorizeRequest(entity.toPostRequest(), 'Basic abc==')).toMatchSnapshot()
   })
 })

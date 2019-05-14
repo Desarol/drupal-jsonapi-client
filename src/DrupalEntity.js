@@ -243,8 +243,14 @@ export const DrupalEntityFromSerializedRequiredFields = requiredFieldsSerializat
   )
 )
 
-export const AuthorizeRequest = (request, authorizationHeaderValue) => (
-  new Request(request, {
-    headers: { ...request.headers, Authorization: authorizationHeaderValue },
-  })
-)
+export const AuthorizeRequest = (request, authorizationHeaderValue) => {
+  const copy = request.clone()
+
+  if (!authorizationHeaderValue) {
+    return request
+  }
+
+  copy.headers.set('Authorization', authorizationHeaderValue)
+
+  return copy
+}
