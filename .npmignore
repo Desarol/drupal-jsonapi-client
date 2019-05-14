@@ -13,9 +13,9 @@ package-lock.json
 yarn.lock
 
 # project files
-src
-test
-examples
+src/
+test/
+examples/
 CHANGELOG.md
 .travis.yml
 .editorconfig
