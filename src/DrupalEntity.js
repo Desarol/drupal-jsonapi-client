@@ -1,3 +1,5 @@
+import idx from 'idx'
+
 if (process.env.BABEL_ENV === 'test') {
   require('regenerator-runtime/runtime') // eslint-disable-line
   require('cross-fetch/polyfill') // eslint-disable-line
@@ -43,6 +45,28 @@ export default class DrupalEntity {
         }
       })
     }
+  }
+
+  _applySerializedData(jsonApiSerialization) {
+    const [entityType, entityBundle] = jsonApiSerialization.type.split('--')
+    this.entityType = entityType
+    this.entityBundle = entityBundle
+    this.entityUuid = jsonApiSerialization.id
+    this._entityId = jsonApiSerialization.attributes.drupal_internal__nid
+    this._versionId = jsonApiSerialization.attributes.drupal_internal__vid
+    this._attributes = jsonApiSerialization.attributes
+    this._relationships = Object
+      .keys(jsonApiSerialization.relationships)
+      .map(key => ({ data: jsonApiSerialization.relationships[key].data, _$key: key }))
+      .reduce((prev, curr) => {
+        const key = curr._$key
+        const copy = curr
+        delete copy._$key
+        return ({
+          ...prev,
+          [key]: copy,
+        })
+      }, {})
   }
 
   _serializeChanges() {
@@ -131,7 +155,13 @@ export default class DrupalEntity {
     this._changes.relationships[fieldName] = fieldValue
   }
 
-  async uploadFile(baseUrl, fieldName, file) {
+  toJsonApiGetRequest(baseUrl) {
+    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}?filter[id]=${this.entityUuid}`, {
+      headers: TypeHeaders,
+    })
+  }
+
+  async toUploadFileRequest(baseUrl, fieldName, file) {
     const binary = await new Promise((resolve) => {
       const fr = new FileReader();
       fr.onload = (event) => {
@@ -143,7 +173,7 @@ export default class DrupalEntity {
     return this.uploadBinary(baseUrl, fieldName, file.name, binary)
   }
 
-  uploadBinary(baseUrl, fieldName, fileName, binary) {
+  toUploadBinaryRequest(fieldName, fileName, binary, baseUrl) {
     return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}/${fieldName}`, {
       method: 'POST',
       headers: {
@@ -175,12 +205,12 @@ export default class DrupalEntity {
     })
   }
 
-  toPatchRequestForRelationship(baseUrl, fieldName) {
+  toPatchRequestForRelationship(fieldName, baseUrl) {
     if (!this.entityUuid) {
       throw new MalformedEntity('Entity is missing UUID but was used in a PATCH request.')
     }
 
-    return new Request(`${baseUrl}/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}/relationships/${fieldName}`, {
+    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}/relationships/${fieldName}`, {
       method: 'PATCH',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serializeChangesForField(fieldName)),
@@ -205,44 +235,6 @@ export default class DrupalEntity {
   }
 }
 
-export const DrupalEntityFromResponse = (jsonApiSerialization) => {
-  const entityTypeParts = jsonApiSerialization.type.split('--')
-  const entity = new DrupalEntity(
-    entityTypeParts[0],
-    entityTypeParts[1],
-    jsonApiSerialization.attributes.drupal_internal__nid,
-    jsonApiSerialization.attributes.drupal_internal__vid,
-  )
-
-  entity._attributes = jsonApiSerialization.attributes
-  entity._relationships = (
-    Object
-      .keys(jsonApiSerialization.relationships)
-      .map(key => ({ ...jsonApiSerialization.relationships[key].data, _$key: key }))
-      .reduce((prev, curr) => {
-        const key = curr._$key
-        const copy = curr
-        delete copy._$key
-        return ({
-          ...prev,
-          [key]: copy,
-        })
-      }, {})
-  )
-
-  return entity
-}
-
-export const DrupalEntityFromSerializedRequiredFields = requiredFieldsSerialization => (
-  new DrupalEntity(
-    requiredFieldsSerialization.entity_type,
-    requiredFieldsSerialization.entity_bundle,
-    null,
-    null,
-    requiredFieldsSerialization.fields,
-  )
-)
-
 export const AuthorizeRequest = (request, authorizationHeaderValue) => {
   const copy = request.clone()
 
@@ -253,4 +245,44 @@ export const AuthorizeRequest = (request, authorizationHeaderValue) => {
   copy.headers.set('Authorization', authorizationHeaderValue)
 
   return copy
+}
+
+export const SendCookies = (request, xCsrfToken) => {
+  const copy = request.clone()
+
+  if (!xCsrfToken) {
+    return request
+  }
+
+  copy.headers.set('X-CSRF-Token', xCsrfToken)
+  copy.credentials = 'same-origin'
+
+  return copy
+}
+
+export const DrupalEntityFromResponse = (jsonApiSerialization) => {
+  const entity = new DrupalEntity()
+  entity._applySerializedData(jsonApiSerialization)
+  return entity
+}
+
+export const DrupalEntityFromSerializedRequiredFields = (requiredFieldsSerialization) => {
+  const entity = new DrupalEntity(
+    requiredFieldsSerialization.entity_type,
+    requiredFieldsSerialization.entity_bundle,
+    null,
+    null,
+    requiredFieldsSerialization.fields,
+  )
+  return entity
+}
+
+export const FetchDrupalEntity = async (drupalEntity, baseUrl, authorizationHeaderValue) => {
+  let request = drupalEntity.toJsonApiGetRequest(baseUrl)
+  if (authorizationHeaderValue) {
+    request = AuthorizeRequest(request, authorizationHeaderValue)
+  }
+  const response = await fetch(request)
+  const json = await response.json()
+  return drupalEntity._applySerializedData(idx(json, _ => _.data[0]))
 }

@@ -1,6 +1,6 @@
 {
   "name": "drupal-jsonapi-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Making working with Drupal 8's JSON:API easier, faster and cleaner.",
   "main": "./lib/index.js",
   "scripts": {
@@ -51,6 +51,8 @@
     "rimraf": "^2.6.2"
   },
   "dependencies": {
-    "cross-fetch": "^3.0.2"
+    "babel-plugin-idx": "^2.4.0",
+    "cross-fetch": "^3.0.2",
+    "idx": "^2.5.6"
   }
 }

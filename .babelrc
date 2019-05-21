@@ -1,13 +1,16 @@
 {
   "env": {
     "test": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 1 chrome version" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 1 chrome version" } }]],
+      "plugins": ["babel-plugin-idx"]
     },
     "development": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 2 versions" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 2 versions" } }]],
+      "plugins": ["babel-plugin-idx"]
     },
     "production": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 2 versions" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 2 versions" } }]],
+      "plugins": ["babel-plugin-idx"]
     }
   }
 }
