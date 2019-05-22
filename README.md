@@ -1,19 +1,30 @@
-# Features
+# Drupal JSON:API Client
 
-* **ES6/ESNext** - Write _ES6_ code and _Babel_ will transpile it to ES5 for backwards compatibility
-* **Test** - _Mocha_ with _Istanbul_ coverage
-* **Lint** - Preconfigured _ESlint_ with _Airbnb_ config
-* **CI** - _TravisCI_ configuration setup
-* **Minify** - Built code will be minified for performance
+This package makes manipulating Drupal entities easier via the JSON:API module which is now in Drupal core (8.7.x).
 
-# Commands
-- `npm run clean` - Remove `lib/` directory
-- `npm test` - Run tests with linting and coverage results.
-- `npm test:only` - Run tests without linting or coverage.
-- `npm test:watch` - You can even re-run tests on file changes!
-- `npm test:prod` - Run tests with minified code.
-- `npm run test:examples` - Test written examples on pure JS for better understanding module usage.
-- `npm run lint` - Run ESlint with airbnb-config
-- `npm run cover` - Get coverage report for your code.
-- `npm run build` - Babel will transpile ES6 => ES5 and minify the code.
-- `npm run prepublish` - Hook for npm. Do all the checks before publishing your module.
+It's still in an early stage and contributions are welcome. The general idea is to maintain a base `DrupalEntity` class which can be extended to provide more context specific uses ie. `Article extends DrupalEntity`.
+
+Here's some syntax sugar to sink your teeth into:
+
+```js
+import { DrupalEntity } from 'drupal-jsonapi-client/lib/DrupalEntity'
+
+const editTitle = async () => {
+
+  // Create a local representation of a Drupal entity
+  const entity = new DrupalEntity('node', 'article', 'ENTITY_UUID')
+  
+  // This will get the data for this entity from Drupal
+  await FetchDrupalEntity(entity)
+
+  // You can now edit the fields
+  entity.editAttribute('title', 'Hello world!');
+
+  // And send the updated fields back to Drupal for saving
+  const response = await fetch(entity.toPatchRequest())
+  const json = await response.json()
+  const updatedEntity = DrupalEntityFromResponse(json.data)
+  
+}
+editTitle()
+```
