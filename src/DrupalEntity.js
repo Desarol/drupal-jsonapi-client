@@ -284,5 +284,6 @@ export const FetchDrupalEntity = async (drupalEntity, baseUrl, authorizationHead
   }
   const response = await fetch(request)
   const json = await response.json()
-  return drupalEntity._applySerializedData(idx(json, _ => _.data[0]))
+  drupalEntity._applySerializedData(idx(json, _ => _.data[0]))
+  return drupalEntity
 }
