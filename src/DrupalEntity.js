@@ -1,4 +1,5 @@
 import idx from 'idx'
+import MalformedEntity from './Error/MalformedEntity'
 
 if (process.env.BABEL_ENV === 'test') {
   require('regenerator-runtime/runtime') // eslint-disable-line
@@ -9,8 +10,6 @@ const TypeHeaders = {
   Accept: 'application/vnd.api+json',
   'Content-Type': 'application/vnd.api+json',
 }
-
-export class MalformedEntity extends Error {}
 
 export default class DrupalEntity {
   constructor(
@@ -155,6 +154,17 @@ export default class DrupalEntity {
     this._changes.relationships[fieldName] = fieldValue
   }
 
+  /**
+   * Get the value of an attribute or relationship.
+   *
+   * @param {string} fieldName - Drupal machine name for field
+   */
+  getValue(fieldName) {
+    return idx(this._relationships, _ => _[fieldName])
+      ? idx(this._relationships, _ => _[fieldName])
+      : idx(this._attributes, _ => _[fieldName])
+  }
+
   toJsonApiGetRequest(baseUrl) {
     return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}?filter[id]=${this.entityUuid}`, {
       headers: TypeHeaders,
@@ -170,7 +180,7 @@ export default class DrupalEntity {
       fr.readAsArrayBuffer(file);
     })
 
-    return this.uploadBinary(baseUrl, fieldName, file.name, binary)
+    return this.toUploadBinaryRequest(baseUrl, fieldName, file.name, binary)
   }
 
   toUploadBinaryRequest(fieldName, fileName, binary, baseUrl) {
@@ -235,31 +245,6 @@ export default class DrupalEntity {
   }
 }
 
-export const AuthorizeRequest = (request, authorizationHeaderValue) => {
-  const copy = request.clone()
-
-  if (!authorizationHeaderValue) {
-    return request
-  }
-
-  copy.headers.set('Authorization', authorizationHeaderValue)
-
-  return copy
-}
-
-export const SendCookies = (request, xCsrfToken) => {
-  const copy = request.clone()
-
-  if (!xCsrfToken) {
-    return request
-  }
-
-  copy.headers.set('X-CSRF-Token', xCsrfToken)
-  copy.credentials = 'same-origin'
-
-  return copy
-}
-
 export const DrupalEntityFromResponse = (jsonApiSerialization) => {
   const entity = new DrupalEntity()
   entity._applySerializedData(jsonApiSerialization)
@@ -275,15 +260,4 @@ export const DrupalEntityFromSerializedRequiredFields = (requiredFieldsSerializa
     requiredFieldsSerialization.fields,
   )
   return entity
-}
-
-export const FetchDrupalEntity = async (drupalEntity, baseUrl, authorizationHeaderValue) => {
-  let request = drupalEntity.toJsonApiGetRequest(baseUrl)
-  if (authorizationHeaderValue) {
-    request = AuthorizeRequest(request, authorizationHeaderValue)
-  }
-  const response = await fetch(request)
-  const json = await response.json()
-  drupalEntity._applySerializedData(idx(json, _ => _.data[0]))
-  return drupalEntity
 }

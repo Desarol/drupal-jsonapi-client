@@ -1,8 +1,7 @@
-import DrupalEntity, { AuthorizeRequest } from './DrupalEntity'
-import { RequiredFieldsFromFieldConfigResponse } from './RequiredFields'
+import DrupalConnection from './DrupalConnection'
+import DrupalEntity from './DrupalEntity'
 
 export default {
   DrupalEntity,
-  AuthorizeRequest,
-  RequiredFieldsFromFieldConfigResponse,
+  DrupalConnection,
 }
