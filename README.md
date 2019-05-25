@@ -15,6 +15,7 @@ yarn add drupal-jsonapi-client
 - **Lightweight** - HTTP library agnostic, zero dependencies
 - **Cross platform** - works in node.js and the browser
 - **Drupal specific** - abstracts away the nuances of working with Drupal's JSON:API implementation
+- **Object oriented** - leverages ES6 classes to neatly package JSON:API objects
 
 Here's some syntax sugar to sink your teeth into:
 
