@@ -12,7 +12,7 @@ yarn add drupal-jsonapi-client
 ```
 
 ## Key features
-- **Lightweight** - HTTP library agnostic, minimum dependencies
+- **Lightweight** - HTTP library agnostic, zero dependencies
 - **Cross platform** - works in node.js and the browser
 - **Drupal specific** - abstracts away the nuances of working with Drupal's JSON:API implementation
 
