@@ -2,6 +2,15 @@
 
 This package makes manipulating Drupal entities and resources easier via the JSON:API module which is now in Drupal core (8.7.x).
 
+## Installation
+```
+npm i --save drupal-jsonapi-client
+```
+
+```
+yarn add drupal-jsonapi-client
+```
+
 ## Key features
 - **Lightweight** - HTTP library agnostic, minimum dependencies
 - **Cross platform** - works in node.js and the browser
