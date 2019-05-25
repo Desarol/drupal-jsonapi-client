@@ -35,10 +35,9 @@ export default class Client {
       referrer,
       referrerPolicy,
     } = request;
-    const bodyCopy = body ? body.toString() : null
 
     let copy = new Request(this.baseUrl + url, {
-      body: bodyCopy,
+      body,
       cache,
       credentials,
       headers,
