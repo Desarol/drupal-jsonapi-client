@@ -158,6 +158,30 @@ export default class Entity {
   }
 
   /**
+   * Get an expanded representation of a related entity.
+   *
+   * @param {string} fieldName
+   * @param {Client} client - client to use when expanding related entity
+   */
+  async expand(fieldName, client) {
+    if (!this._relationships[fieldName]) {
+      throw new MalformedEntity(`Failed to find related entity from field ${fieldName}`)
+    }
+
+    if (
+      this._relationships[fieldName].data
+      && this._relationships[fieldName].data.type
+      && typeof this._relationships[fieldName].data.type === 'string'
+      && this._relationships[fieldName].data.id
+    ) {
+      const [entityType, entityBundle] = this._relationships[fieldName].data.type.split('--')
+      return client.getEntity(entityType, entityBundle, this._relationships[fieldName].data.id)
+    }
+
+    throw new MalformedEntity(`Related field ${fieldName} doesn't have sufficient information to expand.`)
+  }
+
+  /**
    * Set an attribute.
    *
    * @param {string} fieldName - Drupal machine name for the field

@@ -14,6 +14,7 @@ export default class Client {
     this.authorization = authorization
     this.sendCookies = sendCookies
     this.middleware = middleware
+    this.cache = {}
   }
 
   async _fetchCSRFToken() {
@@ -68,18 +69,31 @@ export default class Client {
   }
 
   /**
+   * Remove cached representations of entities.
+   */
+  clearCache() {
+    this.cache = {}
+  }
+
+  /**
    * Get a single entity.
    *
    * @param {string} entityType
    * @param {string} entityBundle
    * @param {string} entityUuid
+   * @param {boolean} refreshCache
    */
-  async getEntity(entityType, entityBundle, entityUuid) {
-    const response = await this.send(new Request(`${this.baseUrl || ''}/jsonapi/${entityType}/${entityBundle}?filter[id]=${entityUuid}`))
+  async getEntity(entityType, entityBundle, entityUuid, refreshCache = false) {
+    if (this.cache[entityUuid] && refreshCache === false) {
+      return this.cache[entityUuid]
+    }
+
+    const response = await this.send(new Request(`${this.baseUrl || ''}/jsonapi/${entityType}/${entityBundle}/${entityUuid}`))
     const json = await response.json()
     const entity = new Entity()
-    if (json && json.data && json.data.length && json.data[0]) {
-      entity._applySerializedData(json.data[0])
+    if (json && json.data) {
+      entity._applySerializedData(json.data)
+      this.cache[entityUuid] = entity
       return entity
     }
 
