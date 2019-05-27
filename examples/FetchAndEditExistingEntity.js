@@ -9,6 +9,6 @@ const doRequest = async () => {
 
   const entity = await client.getEntity('node', 'article', 'uuid')
   entity.setAttribute('title', 'Drupal JSON:API rocks!')
-  await client.send(entity.toPatchRequest())
+  return client.send(entity.toPatchRequest())
 }
 doRequest()
