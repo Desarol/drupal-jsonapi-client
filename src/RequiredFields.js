@@ -1,18 +1,16 @@
-import DrupalEntity from './DrupalEntity'
-
 export default class RequiredFields {
-  constructor(entity, fields) {
-    this._entity = entity
-    this._fields = fields
+  constructor(entityType, entityBundle, fields) {
+    this.entityType = entityType
+    this.entityBundle = entityBundle
+    this.fields = fields
 
-    this._fields.unshift({
+    this.fields.unshift({
       attributes: {
-        machine_name: `${entity.entityType}.${entity.entityBundle}.title`,
+        machine_name: `${entityType}.${entityBundle}.title`,
         field_name: 'title',
         field_type: 'text',
         label: 'Title',
         description: '',
-        required: true,
         translatable: true,
       },
     })
@@ -20,11 +18,11 @@ export default class RequiredFields {
 
   serialize() {
     return ({
-      entity_type: this._entity.entityType,
-      entity_bundle: this._entity.entityBundle,
+      entity_type: this.entityType,
+      entity_bundle: this.entityBundle,
       fields: (
         this
-          ._fields
+          .fields
           .filter(field => field.attributes.required)
           .map(field => ({
             machine_name: field.attributes.drupal_internal__id,
@@ -37,25 +35,4 @@ export default class RequiredFields {
       ),
     })
   }
-}
-
-export const RequiredFieldsFromFieldConfigResponse = (jsonApiSerialization) => {
-  const fields = jsonApiSerialization.data
-
-  // @todo: throw an error or return an entity with empty attributes and relationships
-  if (!fields) {
-    return false
-  }
-
-  if (fields.length === 0) {
-    return false
-  }
-
-  return new RequiredFields(
-    new DrupalEntity(
-      fields[0].attributes.entity_type,
-      fields[0].attributes.bundle,
-    ),
-    fields,
-  )
 }

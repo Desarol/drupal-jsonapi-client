@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Entity parses required fields into DrupalEntity request 1`] = `
+Entity {
+  "_attributes": Object {
+    "title": "",
+  },
+  "_changes": Object {
+    "attributes": Object {},
+    "relationships": Object {},
+  },
+  "_entityId": null,
+  "_relationships": Object {},
+  "_requiredFields": Array [
+    Object {
+      "description": "",
+      "field_name": "title",
+      "field_type": "text",
+      "label": "Title",
+      "translatable": true,
+    },
+  ],
+  "_versionId": null,
+  "entityBundle": "article",
+  "entityType": "node",
+  "entityUuid": null,
+}
+`;
+
+exports[`Entity parses response into DrupalEntity request 1`] = `
+Entity {
+  "_attributes": Object {
+    "body": Object {
+      "format": "basic_html",
+      "processed": "<p>Example content</p>",
+      "summary": "",
+      "value": "<p>Example content</p>
+",
+    },
+    "changed": "2019-05-13T20:57:27+00:00",
+    "comment": Object {
+      "cid": 0,
+      "comment_count": 0,
+      "last_comment_name": null,
+      "last_comment_timestamp": 1557781047,
+      "last_comment_uid": 1,
+      "status": 2,
+    },
+    "created": "2019-05-13T20:57:16+00:00",
+    "default_langcode": true,
+    "drupal_internal__nid": 1,
+    "drupal_internal__vid": 1,
+    "langcode": "en",
+    "path": Object {
+      "alias": null,
+      "langcode": "en",
+      "pid": null,
+    },
+    "promote": true,
+    "revision_log": null,
+    "revision_timestamp": "2019-05-13T20:57:27+00:00",
+    "revision_translation_affected": true,
+    "status": true,
+    "sticky": false,
+    "title": "Example article",
+  },
+  "_changes": Object {
+    "attributes": Object {},
+    "relationships": Object {},
+  },
+  "_entityId": 1,
+  "_relationships": Object {
+    "field_image": Object {
+      "data": null,
+    },
+    "field_tags": Object {
+      "data": Array [],
+    },
+    "node_type": Object {
+      "data": Object {
+        "id": "483a5406-a9b9-40d3-879b-918c32e84f72",
+        "type": "node_type--node_type",
+      },
+    },
+    "revision_uid": Object {
+      "data": Object {
+        "id": "c99a7805-bf73-4ec4-9c19-01ff41e35164",
+        "type": "user--user",
+      },
+    },
+    "uid": Object {
+      "data": Object {
+        "id": "c99a7805-bf73-4ec4-9c19-01ff41e35164",
+        "type": "user--user",
+      },
+    },
+  },
+  "_requiredFields": null,
+  "_versionId": 1,
+  "entityBundle": "article",
+  "entityType": "node",
+  "entityUuid": "04808c36-9a01-4503-952d-f4dd88a1186a",
+}
+`;
+
+exports[`Entity serializes get request to retrieve field config for entity 1`] = `"/jsonapi/field_config/field_config?filter[entity_type]=node&filter[bundle]=article"`;
+
+exports[`Entity serializes patch request to include changes 1`] = `"{\\"data\\":{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"body\\":{\\"value\\":\\"<p>Drupal rocks!</p>\\"}},\\"id\\":\\"04808c36-9a01-4503-952d-f4dd88a1186a\\"}}"`;
+
+exports[`Entity serializes post request to include entity information 1`] = `"{\\"data\\":{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"body\\":{\\"value\\":\\"<p>Drupal rocks!</p>\\"}},\\"relationships\\":{\\"field_reference\\":{\\"id\\":\\"04808c36-9a01-4503-952d-f4dd88a1186a\\"}}}}"`;

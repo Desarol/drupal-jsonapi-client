@@ -17,27 +17,23 @@ yarn add drupal-jsonapi-client
 - **Drupal specific** - abstracts away the nuances of working with Drupal's JSON:API implementation
 - **Object oriented** - leverages ES6 classes to neatly package JSON:API objects
 
-Here's some syntax sugar to sink your teeth into:
+It's still in an early stage and contributions are welcome. The general idea is to maintain a base `Entity` class which can be extended to provide more context specific uses ie. `Article extends Entity`.
+
+Here's some syntax sugar to sink your teeth into that illustrates the vision:
 
 ```js
-import { DrupalEntity } from 'drupal-jsonapi-client/lib/DrupalEntity'
+import { Client } from 'drupal-json-client'
 
-const editTitle = async () => {
+const doRequest = async () => {
+  const client = new Client({
+    transport: fetch, // or whatever HTTP library you are using
+    baseUrl: 'https://www.example.com',
+    sendCookies: true, // use this when running code on the same origin as Drupal
+  })
 
-  // Create a local representation of a Drupal entity
-  const entity = new DrupalEntity('node', 'article', 'ENTITY_UUID')
-  
-  // This will get the data for this entity from Drupal
-  await FetchDrupalEntity(entity)
-
-  // You can now edit the fields
-  entity.editAttribute('title', 'Hello world!');
-
-  // And send the updated fields back to Drupal for saving
-  const response = await fetch(entity.toPatchRequest())
-  const json = await response.json()
-  const updatedEntity = DrupalEntityFromResponse(json.data)
-  
+  const entity = await client.getEntity('node', 'article', 'uuid')
+  entity.setAttribute('title', 'Drupal JSON:API rocks!')
+  return client.send(entity.toPatchRequest())
 }
-editTitle()
+doRequest()
 ```

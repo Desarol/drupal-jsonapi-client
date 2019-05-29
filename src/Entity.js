@@ -1,24 +1,34 @@
-import idx from 'idx'
-
-if (process.env.BABEL_ENV === 'test') {
-  require('regenerator-runtime/runtime') // eslint-disable-line
-  require('cross-fetch/polyfill') // eslint-disable-line
-}
+import MalformedEntity from './Error/MalformedEntity'
 
 const TypeHeaders = {
   Accept: 'application/vnd.api+json',
   'Content-Type': 'application/vnd.api+json',
 }
 
-export class MalformedEntity extends Error {}
+export default class Entity {
+  static FromResponse(response) {
+    const entity = new Entity()
+    entity._applySerializedData(response)
+    return entity
+  }
 
-export default class DrupalEntity {
+  static FromRequiredFields(requiredFieldsSerialization) {
+    const entity = new Entity(
+      requiredFieldsSerialization.entity_type,
+      requiredFieldsSerialization.entity_bundle,
+      null,
+      null,
+      requiredFieldsSerialization.fields,
+    )
+    return entity
+  }
+
   constructor(
     entityType,
     entityBundle,
     entityUuid,
     entityVersionId,
-    requiredFieldsSerializationFields,
+    requiredFields,
   ) {
     this.entityType = entityType
     this.entityBundle = entityBundle
@@ -26,7 +36,7 @@ export default class DrupalEntity {
 
     this._entityId = null
     this._versionId = entityVersionId || null
-    this._requiredFields = requiredFieldsSerializationFields || null
+    this._requiredFields = requiredFields || null
     this._attributes = {}
     this._relationships = {}
     this._changes = {
@@ -37,11 +47,11 @@ export default class DrupalEntity {
     if (this._requiredFields) {
       this._requiredFields.forEach((field) => {
         if (field.field_type !== 'entity_reference') {
-          this.editAttribute(field.field_name, '')
+          this._attributes[field.field_name] = ''
         } else {
-          this.editRelationship(field.field_name, {
+          this._relationships[field.field_name] = {
             data: {},
-          })
+          }
         }
       })
     }
@@ -117,7 +127,7 @@ export default class DrupalEntity {
     return serialization
   }
 
-  nodeId() {
+  entityId() {
     return this._entityId
   }
 
@@ -125,43 +135,75 @@ export default class DrupalEntity {
     return this._versionId
   }
 
+  /**
+   * Get field value.
+   *
+   * @param {string} fieldName
+   */
   get(fieldName) {
-    return this._attributes[fieldName] || this._relationships[fieldName]
-  }
-
-  getChange(fieldName) {
-    return this._changes.attributes[fieldName] || this._changes.relationships[fieldName]
+    return this._attributes[fieldName] !== undefined
+      ? this._attributes[fieldName]
+      : this._relationships[fieldName]
   }
 
   /**
-   * Edit an attribute.
+   * Get local changes for this entity.
+   *
+   * @param {string} fieldName
+   */
+  getChange(fieldName) {
+    return this._changes.attributes[fieldName] !== undefined
+      ? this._changes.attributes[fieldName]
+      : this._changes.relationships[fieldName]
+  }
+
+  /**
+   * Get an expanded representation of a related entity.
+   *
+   * @param {string} fieldName
+   * @param {Client} client - client to use when expanding related entity
+   */
+  async expand(fieldName, client) {
+    if (!this._relationships[fieldName]) {
+      throw new MalformedEntity(`Failed to find related entity from field ${fieldName}`)
+    }
+
+    if (
+      this._relationships[fieldName].data
+      && this._relationships[fieldName].data.type
+      && typeof this._relationships[fieldName].data.type === 'string'
+      && this._relationships[fieldName].data.id
+    ) {
+      const [entityType, entityBundle] = this._relationships[fieldName].data.type.split('--')
+      return client.getEntity(entityType, entityBundle, this._relationships[fieldName].data.id)
+    }
+
+    throw new MalformedEntity(`Related field ${fieldName} doesn't have sufficient information to expand.`)
+  }
+
+  /**
+   * Set an attribute.
    *
    * @param {string} fieldName - Drupal machine name for the field
    * @param {any} fieldValue - value to send to JSON:API
    */
-  editAttribute(fieldName, fieldValue) {
+  setAttribute(fieldName, fieldValue) {
     this._attributes[fieldName] = fieldValue
     this._changes.attributes[fieldName] = fieldValue
   }
 
   /**
-   * Edit a relationship.
+   * Set a relationship.
    *
    * @param {string} fieldName - Drupal machine name for the field
    * @param {any} fieldValue - value to send to JSON:API
    */
-  editRelationship(fieldName, fieldValue) {
+  setRelationship(fieldName, fieldValue) {
     this._relationships[fieldName] = fieldValue
     this._changes.relationships[fieldName] = fieldValue
   }
 
-  toJsonApiGetRequest(baseUrl) {
-    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}?filter[id]=${this.entityUuid}`, {
-      headers: TypeHeaders,
-    })
-  }
-
-  async toUploadFileRequest(baseUrl, fieldName, file) {
+  async toUploadFileRequest(fieldName, file) {
     const binary = await new Promise((resolve) => {
       const fr = new FileReader();
       fr.onload = (event) => {
@@ -170,11 +212,11 @@ export default class DrupalEntity {
       fr.readAsArrayBuffer(file);
     })
 
-    return this.uploadBinary(baseUrl, fieldName, file.name, binary)
+    return this.toUploadBinaryRequest(fieldName, file.name, binary)
   }
 
-  toUploadBinaryRequest(fieldName, fileName, binary, baseUrl) {
-    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}/${fieldName}`, {
+  toUploadBinaryRequest(fieldName, fileName, binary) {
+    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}/${fieldName}`, {
       method: 'POST',
       headers: {
         ...TypeHeaders,
@@ -185,32 +227,32 @@ export default class DrupalEntity {
     })
   }
 
-  toPostRequest(baseUrl) {
-    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}`, {
+  toPostRequest() {
+    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}`, {
       method: 'POST',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serialize()),
     })
   }
 
-  toPatchRequest(baseUrl) {
+  toPatchRequest() {
     if (!this.entityUuid) {
       throw new MalformedEntity('Entity is missing UUID but was used in a PATCH request.')
     }
 
-    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`, {
+    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`, {
       method: 'PATCH',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serializeChanges()),
     })
   }
 
-  toPatchRequestForRelationship(fieldName, baseUrl) {
+  toPatchRequestForRelationship(fieldName) {
     if (!this.entityUuid) {
       throw new MalformedEntity('Entity is missing UUID but was used in a PATCH request.')
     }
 
-    return new Request(`${baseUrl || ''}/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}/relationships/${fieldName}`, {
+    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}/relationships/${fieldName}`, {
       method: 'PATCH',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serializeChangesForField(fieldName)),
@@ -219,13 +261,9 @@ export default class DrupalEntity {
 
   /**
    * Get required fields for this entity.
-   *
-   * @param {string} baseUrl
    */
-  toFieldConfigRequest(baseUrl) {
-    return new Request(`${
-      baseUrl || ''
-    }/jsonapi/field_config/field_config?filter[entity_type]=${
+  toFieldConfigRequest() {
+    return new Request(`/jsonapi/field_config/field_config?filter[entity_type]=${
       this.entityType
     }&filter[bundle]=${
       this.entityBundle
@@ -233,57 +271,4 @@ export default class DrupalEntity {
       headers: { ...TypeHeaders },
     })
   }
-}
-
-export const AuthorizeRequest = (request, authorizationHeaderValue) => {
-  const copy = request.clone()
-
-  if (!authorizationHeaderValue) {
-    return request
-  }
-
-  copy.headers.set('Authorization', authorizationHeaderValue)
-
-  return copy
-}
-
-export const SendCookies = (request, xCsrfToken) => {
-  const copy = request.clone()
-
-  if (!xCsrfToken) {
-    return request
-  }
-
-  copy.headers.set('X-CSRF-Token', xCsrfToken)
-  copy.credentials = 'same-origin'
-
-  return copy
-}
-
-export const DrupalEntityFromResponse = (jsonApiSerialization) => {
-  const entity = new DrupalEntity()
-  entity._applySerializedData(jsonApiSerialization)
-  return entity
-}
-
-export const DrupalEntityFromSerializedRequiredFields = (requiredFieldsSerialization) => {
-  const entity = new DrupalEntity(
-    requiredFieldsSerialization.entity_type,
-    requiredFieldsSerialization.entity_bundle,
-    null,
-    null,
-    requiredFieldsSerialization.fields,
-  )
-  return entity
-}
-
-export const FetchDrupalEntity = async (drupalEntity, baseUrl, authorizationHeaderValue) => {
-  let request = drupalEntity.toJsonApiGetRequest(baseUrl)
-  if (authorizationHeaderValue) {
-    request = AuthorizeRequest(request, authorizationHeaderValue)
-  }
-  const response = await fetch(request)
-  const json = await response.json()
-  drupalEntity._applySerializedData(idx(json, _ => _.data[0]))
-  return drupalEntity
 }

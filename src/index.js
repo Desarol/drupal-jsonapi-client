@@ -1,8 +1,4 @@
-import DrupalEntity, { AuthorizeRequest } from './DrupalEntity'
-import { RequiredFieldsFromFieldConfigResponse } from './RequiredFields'
-
-export default {
-  DrupalEntity,
-  AuthorizeRequest,
-  RequiredFieldsFromFieldConfigResponse,
-}
+export { default as Client } from './Client'
+export { default as Entity } from './Entity'
+export { default as RequiredFields } from './RequiredFields'
+export * from './Error'
