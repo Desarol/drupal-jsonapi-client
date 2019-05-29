@@ -2,7 +2,7 @@
 
 This package makes manipulating Drupal entities easier via the JSON:API module which is now in Drupal core (8.7.x).
 
-It's still in an early stage and contributions are welcome. The general idea is to maintain a base `DrupalEntity` class which can be extended to provide more context specific uses ie. `Article extends DrupalEntity`.
+It's still in an early stage and contributions are welcome. The general idea is to maintain a base `Entity` class which can be extended to provide more context specific uses ie. `Article extends Entity`.
 
 Here's some syntax sugar to sink your teeth into:
 
