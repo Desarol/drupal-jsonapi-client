@@ -99,15 +99,4 @@ export default class Client {
 
     throw new EntityNotFound(`Failed to find entity matching entity type ${entityType}, entity bundle ${entityBundle} and uuid ${entityUuid}`)
   }
-
-  /**
-   * Get all matching entities.
-   *
-   * @param {string} entityType
-   * @param {string} entityBundle
-   * @param {object} filters
-   */
-  async getEntities(entityType, entityBundle, filters) {
-    console.log(this.baseUrl, entityType, entityBundle, filters)
-  }
 }
