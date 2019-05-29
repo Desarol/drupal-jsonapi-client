@@ -1,6 +1,6 @@
 {
   "name": "drupal-jsonapi-client",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Making working with Drupal 8's JSON:API easier, faster and cleaner.",
   "main": "./lib/index.js",
   "scripts": {
