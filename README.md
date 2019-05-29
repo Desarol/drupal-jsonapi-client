@@ -11,7 +11,7 @@ import { Client } from 'drupal-json-client'
 
 const doRequest = async () => {
   const client = new Client({
-    transport: fetch,
+    transport: fetch, // or whatever HTTP library you are using
     baseUrl: 'https://www.example.com',
     sendCookies: true, // use this when running code on the same origin as Drupal
   })
