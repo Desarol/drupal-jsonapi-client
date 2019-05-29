@@ -88,7 +88,7 @@ export default class Client {
       return this.cache[entityUuid]
     }
 
-    const response = await this.send(new Request(`${this.baseUrl || ''}/jsonapi/${entityType}/${entityBundle}/${entityUuid}`))
+    const response = await this.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}`))
     const json = await response.json()
     const entity = new Entity()
     if (json && json.data) {
