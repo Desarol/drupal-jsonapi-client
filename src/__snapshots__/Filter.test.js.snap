@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter serializes complex filter to query 1`] = `
+Array [
+  "filter[filter-1][condition][path]=title",
+  "filter[filter-1][condition][operator]=IN",
+  "filter[filter-1][condition][memberOf]=group-1",
+  Array [
+    "filter[filter-1][condition][value]=asdf",
+    "filter[filter-1][condition][value]=1234",
+  ],
+]
+`;
+
+exports[`Filter serializes simple filter to a query 1`] = `
+Array [
+  "filter[filter-1][condition][path]=title",
+  "",
+  "",
+  "filter[filter-1][condition][value]=asdf123",
+]
+`;

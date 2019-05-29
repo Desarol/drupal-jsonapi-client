@@ -1,10 +1,12 @@
+/* eslint-disable import/first */
+require('regenerator-runtime/runtime') // eslint-disable-line
+
 import { Request, Response } from 'node-fetch'
 import Client from './Client'
 import Entity from './Entity'
 
 global.Request = Request
 global.Response = Response
-require('regenerator-runtime/runtime') // eslint-disable-line
 
 describe('Client', () => {
   it('applies base URL', async () => {
