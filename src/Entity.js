@@ -203,6 +203,12 @@ export default class Entity {
     this._changes.relationships[fieldName] = fieldValue
   }
 
+  /**
+   * Take a File and upload it to Drupal.
+   *
+   * @param {string} fieldName
+   * @param {File} file
+   */
   async toUploadFileRequest(fieldName, file) {
     const binary = await new Promise((resolve) => {
       const fr = new FileReader();
