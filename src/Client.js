@@ -131,18 +131,18 @@ export default class Client {
    *
    * @param {string}              config.entityType
    * @param {string}              config.entityBundle
-   * @param {Filter|FilterGroup}  config.filterOrFilterGroup  default = {}
+   * @param {Filter|FilterGroup}  config.filter               default = {}
    * @param {number}              config.pageOffset           default = 0
    * @param {number}              config.pageLimit            default = 50
    */
   async getEntities({
     entityType,
     entityBundle,
-    filterOrFilterGroup = {},
+    filter = {},
     pageOffset = 0,
     pageLimit = 50,
   }) {
-    const filterQuery = filterOrFilterGroup.query ? filterOrFilterGroup.query() : []
+    const filterQuery = filter.query ? filter.query() : []
     const sortQuery = [`page[offset]=${pageOffset}`, `page[limit]=${pageLimit}`]
     const query = Client._QueryParameterize([filterQuery, sortQuery])
 
