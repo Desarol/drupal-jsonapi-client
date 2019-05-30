@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/master.svg?style=svg)](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/master)
+
 # Drupal JSON:API Client
 
 This package makes manipulating Drupal entities and resources easier via the JSON:API module which is now in Drupal core (8.7.x).
