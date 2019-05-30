@@ -12,13 +12,7 @@ const doRequest = async () => {
   const file = document.querySelector('input[type="file"]').files[0]
   const response = await client.send(entity.toUploadFileRequest('field_image', file))
   const json = await response.json()
-  const fileEntity = Entity.FromResponse(json.data)
-  entity.setRelationship('field_image', {
-    data: {
-      type: 'file--file',
-      id: fileEntity.entityUuid
-    }
-  })
+  entity.setRelationship('field_image', Entity.FromResponse(json.data))
   return client.send(entity.toPatchRequest())
 }
 doRequest()
