@@ -199,8 +199,18 @@ export default class Entity {
    * @param {any} fieldValue - value to send to JSON:API
    */
   setRelationship(fieldName, fieldValue) {
-    this._relationships[fieldName] = fieldValue
-    this._changes.relationships[fieldName] = fieldValue
+    let value = fieldValue
+    if (fieldValue instanceof Entity) {
+      value = {
+        data: {
+          type: `${fieldValue.entityType}--${fieldValue.entityBundle}`,
+          id: fieldValue.entityUuid,
+        },
+      }
+    }
+
+    this._relationships[fieldName] = value
+    this._changes.relationships[fieldName] = value
   }
 
   /**
