@@ -4,10 +4,10 @@
       "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 1 chrome version" } }]]
     },
     "development": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 2 versions" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 3 versions" } }]]
     },
     "production": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 2 versions" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 3 versions" } }]]
     }
   }
 }

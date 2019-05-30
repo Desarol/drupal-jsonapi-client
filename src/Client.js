@@ -20,8 +20,13 @@ if (!Array.prototype.flat) {
 /* eslint-enable */
 
 export default class Client {
-  static _QueryParameterize(queryParameterArray) {
-    return queryParameterArray.flat().filter(item => item !== '').map(item => (item.query ? item.query() : item)).join('&')
+  static _QueryParameterize(queryParameterArray, depth = 10) {
+    return queryParameterArray
+      .flat(depth)
+      .map(item => (item.query ? item.query() : item))
+      .flat(depth)
+      .filter(item => item !== '')
+      .join('&')
   }
 
   constructor({
