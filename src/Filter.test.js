@@ -25,14 +25,4 @@ describe('Filter', () => {
       memberOf: 'group-1',
     }).query()).toMatchSnapshot()
   })
-
-  it('fetches entity based on filter', () => {
-    const filter = new Filter({
-      identifier: 'filter-1',
-      operator: 'IN',
-      path: 'title',
-      value: ['asdf', '1234'],
-      memberOf: 'group-1',
-    })
-  })
 })

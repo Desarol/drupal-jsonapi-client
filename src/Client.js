@@ -21,7 +21,7 @@ if (!Array.prototype.flat) {
 
 export default class Client {
   static _QueryParameterize(queryParameterArray) {
-    return queryParameterArray.flat().map(item => (item.query ? item.query() : item)).join('&')
+    return queryParameterArray.flat().filter(item => item !== '').map(item => (item.query ? item.query() : item)).join('&')
   }
 
   constructor({
@@ -148,6 +148,14 @@ export default class Client {
 
     const response = await this.send(new Request(`/jsonapi/${entityType}/${entityBundle}?${query}`))
     const json = await response.json()
-    return json
+
+    if (json && json.data && json.data.length && json.data.length > 0) {
+      return json.data.map((item) => {
+        const entity = new Entity()
+        entity._applySerializedData(item)
+        return entity
+      })
+    }
+    return json.data
   }
 }
