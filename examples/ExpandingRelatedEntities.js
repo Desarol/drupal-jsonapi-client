@@ -12,7 +12,7 @@ const doRequest = async () => {
   // This will fetch the entity referenced via this field.
   // This response is cached so subsequent calls to expand
   // the same entity (keyed by UUID) won't use the network.
-  const relatedEntity = await entity.expand('field_relationship')
+  const relatedEntity = await entity.expand('field_relationship', client)
 
   // You now have access to this entity and all it's attributes and relationships.
   console.log(relatedEntity.get('title'))
