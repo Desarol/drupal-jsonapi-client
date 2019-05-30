@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Client generates valid query string from FilterGroup 1`] = `"filter[group-1][group][conjunction]=AND&filter[filter-1][condition][path]=title&filter[filter-1][condition][memberOf]=group-1&filter[filter-1][condition][value]=asdf"`;
