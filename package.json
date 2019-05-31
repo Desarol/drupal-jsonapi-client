@@ -15,8 +15,7 @@
     "prepare": "npm run clean && npm run lint && npm run test && npm run build"
   },
   "files": [
-    "lib",
-    "src"
+    "lib"
   ],
   "repository": {
     "type": "git",
