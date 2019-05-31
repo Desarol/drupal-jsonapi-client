@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter serializes filter group with conjunction AND to a query 1`] = `"filter[group-1][group][conjunction]=AND&filter[filter-1][condition][path]=title&filter[filter-1][condition][memberOf]=group-1&filter[filter-1][condition][value]=asdf123&filter[filter-2][condition][path]=status&filter[filter-2][condition][memberOf]=group-1&filter[filter-2][condition][value]=1"`;
+
+exports[`Filter serializes filter group with conjunction OR to a query 1`] = `"filter[group-1][group][conjunction]=OR&filter[filter-1][condition][path]=title&filter[filter-1][condition][memberOf]=group-1&filter[filter-1][condition][value]=asdf123&filter[filter-2][condition][path]=status&filter[filter-2][condition][memberOf]=group-1&filter[filter-2][condition][value]=1"`;
+
+exports[`Filter serializes nested filter groups 1`] = `"filter[group-3][group][conjunction]=OR&filter[group-1][group][conjunction]=AND&filter[group-1][group][memberOf]=group-3&filter[filter-1][condition][path]=title&filter[filter-1][condition][memberOf]=group-1&filter[filter-1][condition][value]=asdf123&filter[filter-2][condition][path]=status&filter[filter-2][condition][memberOf]=group-1&filter[filter-2][condition][value]=1&filter[group-2][group][conjunction]=AND&filter[group-2][group][memberOf]=group-3&filter[filter-3][condition][path]=title&filter[filter-3][condition][memberOf]=group-2&filter[filter-3][condition][value]=asdf123&filter[filter-4][condition][path]=status&filter[filter-4][condition][memberOf]=group-2&filter[filter-4][condition][value]=1"`;

@@ -1,10 +1,11 @@
+/* eslint-disable import/first */
+require('regenerator-runtime/runtime') // eslint-disable-line
+
 import { Request, Response } from 'node-fetch'
 import Entity from './Entity'
 
 global.Request = Request
 global.Response = Response
-require('regenerator-runtime/runtime') // eslint-disable-line
-
 
 describe('Entity', () => {
   it('parses response into DrupalEntity request', () => {

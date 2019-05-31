@@ -39,3 +39,7 @@ const doRequest = async () => {
 }
 doRequest()
 ```
+
+## Examples
+
+For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/master/examples).
