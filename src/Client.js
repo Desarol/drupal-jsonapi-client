@@ -33,10 +33,12 @@ export default class Client {
       referrerPolicy,
     } = request;
 
+    const credentialsCopy = this.sendCookies === true ? 'same-origin' : credentials
+
     let copy = new Request(this.baseUrl + url, {
       body,
       cache,
-      credentials,
+      credentials: credentialsCopy,
       headers,
       integrity,
       method,
@@ -49,7 +51,6 @@ export default class Client {
     if (this.sendCookies === true) {
       const xCsrfToken = await this._fetchCSRFToken()
       copy.headers.set('X-CSRF-Token', xCsrfToken)
-      copy.credentials = 'same-origin'
     }
 
     if (typeof this.authorization === 'string') {
