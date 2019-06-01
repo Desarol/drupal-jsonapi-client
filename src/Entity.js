@@ -355,8 +355,8 @@ export default class Entity {
   _toSaveRequest() {
     return (
       (this._enforceNew === true || !this.entityUuid)
-        ? this.toPostRequest()
-        : this.toPatchRequest()
+        ? this._toPostRequest()
+        : this._toPatchRequest()
     )
   }
 
