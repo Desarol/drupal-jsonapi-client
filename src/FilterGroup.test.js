@@ -2,16 +2,16 @@
 require('regenerator-runtime/runtime') // eslint-disable-line
 
 import { Request, Response } from 'node-fetch'
+import QueryParameters from './QueryParameters'
 import FilterGroup from './FilterGroup'
 import Filter from './Filter'
-import Client from './Client'
 
 global.Request = Request
 global.Response = Response
 
 describe('Filter', () => {
   it('serializes filter group with conjunction AND to a query', () => {
-    expect(Client._QueryParameterize([
+    expect((new QueryParameters([
       new FilterGroup({
         identifier: 'group-1',
         type: 'AND',
@@ -28,11 +28,11 @@ describe('Filter', () => {
           }),
         ],
       }),
-    ])).toMatchSnapshot()
+    ])).toString(10)).toMatchSnapshot()
   })
 
   it('serializes filter group with conjunction OR to a query', () => {
-    expect(Client._QueryParameterize([
+    expect((new QueryParameters([
       new FilterGroup({
         identifier: 'group-1',
         type: 'OR',
@@ -49,11 +49,11 @@ describe('Filter', () => {
           }),
         ],
       }),
-    ])).toMatchSnapshot()
+    ])).toString(10)).toMatchSnapshot()
   })
 
   it('serializes nested filter groups', () => {
-    expect(Client._QueryParameterize([
+    expect((new QueryParameters([
       new FilterGroup({
         identifier: 'group-3',
         type: 'OR',
@@ -92,6 +92,6 @@ describe('Filter', () => {
           }),
         ],
       }),
-    ])).toMatchSnapshot()
+    ])).toString(10)).toMatchSnapshot()
   })
 })

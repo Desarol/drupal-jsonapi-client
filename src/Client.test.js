@@ -34,7 +34,7 @@ describe('Client', () => {
       transport: transportMock,
       authorization: AUTHORIZATION,
     })
-    await client.send(entity.toPostRequest())
+    await client.send(entity._toPostRequest())
     expect(transportMock.mock.calls[0][0].headers.get('Authorization')).toEqual(AUTHORIZATION)
   })
 
@@ -48,30 +48,8 @@ describe('Client', () => {
       transport: transportMock,
       sendCookies: true,
     })
-    await client.send(entity.toPostRequest())
+    await client.send(entity._toPostRequest())
     expect(transportMock.mock.calls[1][0].headers.get('X-CSRF-Token')).toEqual(XCSRFTOKEN)
     expect(transportMock.mock.calls[1][0].credentials).toEqual('same-origin')
-  })
-
-  it('generates valid query string', () => {
-    expect(Client._QueryParameterize(['page[offset]=0', 'page[limit]=50'])).toEqual('page[offset]=0&page[limit]=50')
-  })
-
-  it('generates valid query string from FilterGroup', () => {
-    expect(
-      Client._QueryParameterize(
-        new FilterGroup({
-          identifier: 'group-1',
-          type: 'AND',
-          children: [
-            new Filter({
-              identifier: 'filter-1',
-              path: 'title',
-              value: 'asdf',
-            }),
-          ],
-        }).query(),
-      ),
-    ).toMatchSnapshot()
   })
 })

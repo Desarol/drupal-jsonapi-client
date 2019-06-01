@@ -9,6 +9,7 @@ Entity {
     "attributes": Object {},
     "relationships": Object {},
   },
+  "_enforceNew": false,
   "_entityId": null,
   "_relationships": Object {},
   "_requiredFields": Array [
@@ -68,6 +69,7 @@ Entity {
     "attributes": Object {},
     "relationships": Object {},
   },
+  "_enforceNew": false,
   "_entityId": 1,
   "_relationships": Object {
     "field_image": Object {

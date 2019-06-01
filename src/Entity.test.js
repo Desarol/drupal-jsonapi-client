@@ -19,7 +19,7 @@ describe('Entity', () => {
   it('serializes patch request to include changes', () => {
     const entity = new Entity('node', 'article', '04808c36-9a01-4503-952d-f4dd88a1186a')
     entity.setAttribute('body', { value: '<p>Drupal rocks!</p>' })
-    const request = entity.toPatchRequest()
+    const request = entity._toPatchRequest()
     expect(request.method).toEqual('PATCH')
     expect(request.body.toString()).toMatchSnapshot()
   })
@@ -28,14 +28,14 @@ describe('Entity', () => {
     const entity = new Entity('node', 'article')
     entity.setAttribute('body', { value: '<p>Drupal rocks!</p>' })
     entity.setRelationship('field_reference', { id: '04808c36-9a01-4503-952d-f4dd88a1186a' })
-    const request = entity.toPostRequest()
+    const request = entity._toPostRequest()
     expect(request.method).toEqual('POST')
     expect(request.body.toString()).toMatchSnapshot()
   })
 
   it('serializes get request to retrieve field config for entity', () => {
     const entity = new Entity('node', 'article')
-    const request = entity.toFieldConfigRequest()
+    const request = entity._toFieldConfigRequest()
     expect(request.method).toEqual('GET')
     expect(request.url).toMatchSnapshot()
   })
