@@ -75,29 +75,16 @@ export default class Entity {
     return json.data
   }
 
-  static FromRequiredFields(requiredFieldsSerialization) {
-    const entity = new Entity(
-      requiredFieldsSerialization.entity_type,
-      requiredFieldsSerialization.entity_bundle,
-      null,
-      null,
-      requiredFieldsSerialization.fields,
-    )
-    return entity
-  }
-
   constructor(
     entityType,
     entityBundle,
     entityUuid,
-    requiredFields,
   ) {
     this.entityType = entityType
     this.entityBundle = entityBundle
     this.entityUuid = entityUuid || null
 
     this._enforceNew = false
-    this._requiredFields = requiredFields || null
     this._attributes = {}
     this._relationships = {}
     this._changes = {
@@ -378,19 +365,6 @@ export default class Entity {
       method: 'PATCH',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serializeChanges()),
-    })
-  }
-
-  /**
-   * Get required fields for this entity.
-   */
-  _toFieldConfigRequest() {
-    return new Request(`/jsonapi/field_config/field_config?filter[entity_type]=${
-      this.entityType
-    }&filter[bundle]=${
-      this.entityBundle
-    }`, {
-      headers: { ...TypeHeaders },
     })
   }
 

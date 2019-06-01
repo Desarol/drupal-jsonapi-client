@@ -18,24 +18,36 @@ yarn add drupal-jsonapi-client
 - **Cross platform** - works in node.js and the browser
 - **Drupal specific** - abstracts away the nuances of working with Drupal's JSON:API implementation
 - **Object oriented** - leverages ES6 classes to neatly package JSON:API objects
+- **Familiar** - takes inspiration from Drupal's Entity API syntax
 
 It's still in an early stage and contributions are welcome. The general idea is to maintain a base `Entity` class which can be extended to provide more context specific uses ie. `Article extends Entity`.
 
 Here's some syntax sugar to sink your teeth into that illustrates the vision:
 
 ```js
-import { Client } from 'drupal-json-client'
+import { GlobalClient, Entity } from 'drupal-json-client'
+
+GlobalClient.transport = fetch
+GlobalClient.baseUrl = 'https://www.example.com'
+GlobalClient.sendCookies = true // use this when running code on the same origin as Drupal
 
 const doRequest = async () => {
-  const client = new Client({
-    transport: fetch, // or whatever HTTP library you are using
-    baseUrl: 'https://www.example.com',
-    sendCookies: true, // use this when running code on the same origin as Drupal
-  })
+  // Update an existing entity
+  const entity = await Entity.Load('node', 'article', 'uuid')
+  entity.title = 'Drupal JSON:API rocks!'
+  // PATCH the existing entity
+  await entity.save()
 
-  const entity = await client.getEntity('node', 'article', 'uuid')
-  entity.setAttribute('title', 'Drupal JSON:API rocks!')
-  return client.send(entity.toPatchRequest())
+  // Create a new entity
+  const newEntity = new Entity('node', 'article')
+  // .setAttribute must be used here as Entity
+  // doesn't know whether title should be
+  // an attribute or a relationship
+  newEntity.setAttribute('title', 'A brand new article!')
+  // Future references to "title" can use .title
+  newEntity.title = 'We changed the title'
+  // POST the new entity
+  await newEntity.save()
 }
 doRequest()
 ```
