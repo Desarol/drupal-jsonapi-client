@@ -19,6 +19,9 @@ jobs: # a collection of steps
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: lint
+          command: npm run lint
       - run: # run tests
           name: test
           command: npm test
