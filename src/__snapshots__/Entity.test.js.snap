@@ -1,33 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Entity parses required fields into DrupalEntity request 1`] = `
-Entity {
-  "_attributes": Object {
-    "title": "",
-  },
-  "_changes": Object {
-    "attributes": Object {},
-    "relationships": Object {},
-  },
-  "_enforceNew": false,
-  "_entityId": null,
-  "_relationships": Object {},
-  "_requiredFields": Array [
-    Object {
-      "description": "",
-      "field_name": "title",
-      "field_type": "text",
-      "label": "Title",
-      "translatable": true,
-    },
-  ],
-  "_versionId": null,
-  "entityBundle": "article",
-  "entityType": "node",
-  "entityUuid": null,
-}
-`;
-
 exports[`Entity parses response into DrupalEntity request 1`] = `
 Entity {
   "_attributes": Object {
@@ -70,7 +42,6 @@ Entity {
     "relationships": Object {},
   },
   "_enforceNew": false,
-  "_entityId": 1,
   "_relationships": Object {
     "field_image": Object {
       "data": null,
@@ -98,14 +69,11 @@ Entity {
     },
   },
   "_requiredFields": null,
-  "_versionId": 1,
   "entityBundle": "article",
   "entityType": "node",
   "entityUuid": "04808c36-9a01-4503-952d-f4dd88a1186a",
 }
 `;
-
-exports[`Entity serializes get request to retrieve field config for entity 1`] = `"/jsonapi/field_config/field_config?filter[entity_type]=node&filter[bundle]=article"`;
 
 exports[`Entity serializes patch request to include changes 1`] = `"{\\"data\\":{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"body\\":{\\"value\\":\\"<p>Drupal rocks!</p>\\"}},\\"id\\":\\"04808c36-9a01-4503-952d-f4dd88a1186a\\"}}"`;
 

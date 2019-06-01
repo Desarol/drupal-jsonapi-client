@@ -90,7 +90,6 @@ export default class Entity {
     entityType,
     entityBundle,
     entityUuid,
-    entityVersionId,
     requiredFields,
   ) {
     this.entityType = entityType
@@ -98,8 +97,6 @@ export default class Entity {
     this.entityUuid = entityUuid || null
 
     this._enforceNew = false
-    this._entityId = null
-    this._versionId = entityVersionId || null
     this._requiredFields = requiredFields || null
     this._attributes = {}
     this._relationships = {}
@@ -157,17 +154,20 @@ export default class Entity {
         if (!(fieldName in target)) {
           if (target._attributes[fieldName]) {
             target.setAttribute(fieldName, value)
-            return
+            // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set
+            // Must return true if property was set successfully
+            return true
           }
 
           if (target._relationships[fieldName]) {
             target.setRelationship(fieldName, value)
-            return
+            return true
           }
         }
 
         // eslint-disable-next-line no-param-reassign
         target[fieldName] = value
+        return true
       },
     })
   }
@@ -177,8 +177,6 @@ export default class Entity {
     this.entityType = entityType
     this.entityBundle = entityBundle
     this.entityUuid = jsonApiSerialization.id
-    this._entityId = jsonApiSerialization.attributes.drupal_internal__nid
-    this._versionId = jsonApiSerialization.attributes.drupal_internal__vid
     this._attributes = jsonApiSerialization.attributes
     this._relationships = Object
       .keys(jsonApiSerialization.relationships)
@@ -247,14 +245,6 @@ export default class Entity {
       fieldName in this._attributes
       || fieldName in this._relationships
     )
-  }
-
-  entityId() {
-    return this._entityId
-  }
-
-  versionId() {
-    return this._versionId
   }
 
   /**
