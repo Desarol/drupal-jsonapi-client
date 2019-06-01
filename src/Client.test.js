@@ -4,8 +4,6 @@ require('regenerator-runtime/runtime') // eslint-disable-line
 import { Request, Response } from 'node-fetch'
 import Client from './Client'
 import Entity from './Entity'
-import FilterGroup from './FilterGroup';
-import Filter from './Filter';
 
 global.Request = Request
 global.Response = Response
