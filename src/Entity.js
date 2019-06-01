@@ -75,6 +75,17 @@ export default class Entity {
     return json.data
   }
 
+  /**
+   * Delete a remote entity.
+   *
+   * @param {string} entityType
+   * @param {string} entityBundle
+   * @param {string} entityUuid
+   */
+  static async Delete(entityType, entityBundle, entityUuid) {
+    return (new Entity(entityType, entityBundle, entityUuid)).delete()
+  }
+
   constructor(
     entityType,
     entityBundle,
