@@ -68,7 +68,6 @@ Entity {
       },
     },
   },
-  "_requiredFields": null,
   "entityBundle": "article",
   "entityType": "node",
   "entityUuid": "04808c36-9a01-4503-952d-f4dd88a1186a",

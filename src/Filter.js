@@ -33,7 +33,7 @@ export default class Filter {
       ),
       (
         typeof this.value.map === 'function'
-          ? this.value.map(singleValue => `filter[${this.identifier}][condition][value]=${singleValue}`)
+          ? this.value.map(singleValue => `filter[${this.identifier}][condition][value][]=${singleValue}`)
           : `filter[${this.identifier}][condition][value]=${this.value}`
       ),
     ])
