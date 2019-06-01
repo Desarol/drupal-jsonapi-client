@@ -30,7 +30,7 @@ export default class Entity {
       return Entity.FromResponse(EntityCache[entityUuid])
     }
 
-    const response = await this.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}`))
+    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}`))
     const json = await response.json()
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
@@ -62,7 +62,7 @@ export default class Entity {
     const filterQuery = typeof filter.query === 'function' ? filter.query() : filter
     const queryParameters = new QueryParameters([filterQuery, `page[offset]=${pageOffset}`, `page[limit]=${pageLimit}`])
 
-    const response = await this.send(new Request(`/jsonapi/${entityType}/${entityBundle}?${queryParameters.toString(Number.MAX_SAFE_INTEGER)}`))
+    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}?${queryParameters.toString(Number.MAX_SAFE_INTEGER)}`))
     const json = await response.json()
 
     if (json && json.data && json.data.length && json.data.length > 0) {
