@@ -119,6 +119,57 @@ export default class Entity {
         }
       })
     }
+
+    // Setup proxy behaviour for fields
+    return new Proxy(this, {
+      get: (target, key) => {
+        let fieldName = key
+
+        const fieldNameTransformations = {
+          nid: 'drupal_internal__nid',
+          vid: 'drupal_internal__vid',
+        }
+
+        if (fieldName in fieldNameTransformations) {
+          fieldName = fieldNameTransformations[fieldName]
+        }
+
+        if (!(fieldName in target)) {
+          if (target._hasField(fieldName)) {
+            return target.get(key)
+          }
+        }
+
+        return target[key]
+      },
+      set: (target, key, value) => {
+        let fieldName = key
+
+        const fieldNameTransformations = {
+          nid: 'drupal_internal__nid',
+          vid: 'drupal_internal__vid',
+        }
+
+        if (fieldName in fieldNameTransformations) {
+          fieldName = fieldNameTransformations[fieldName]
+        }
+
+        if (!(fieldName in target)) {
+          if (target._attributes[fieldName]) {
+            target.setAttribute(fieldName, value)
+            return
+          }
+
+          if (target._relationships[fieldName]) {
+            target.setRelationship(fieldName, value)
+            return
+          }
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        target[fieldName] = value
+      },
+    })
   }
 
   _applySerializedData(jsonApiSerialization) {
@@ -189,6 +240,13 @@ export default class Entity {
     }
 
     return serialization
+  }
+
+  _hasField(fieldName) {
+    return (
+      fieldName in this._attributes
+      || fieldName in this._relationships
+    )
   }
 
   entityId() {
