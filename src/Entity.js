@@ -23,15 +23,15 @@ export default class Entity {
    * @param {string} entityType
    * @param {string} entityBundle
    * @param {string} entityUuid
-   * @param {boolean} refreshCache            default = false
    * @param {string[]} includeRelationships   default = []
+   * @param {boolean} refreshCache            default = false
    */
   static async Load(
     entityType,
     entityBundle,
     entityUuid,
-    refreshCache = false,
     includeRelationships = [],
+    refreshCache = false,
   ) {
     if (Entity.Cache[entityUuid] && refreshCache === false) {
       return Entity.FromResponse(Entity.Cache[entityUuid])
@@ -42,12 +42,12 @@ export default class Entity {
     const json = await response.json()
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
-      Entity.Cache[entityUuid] = entity._serialize()
+      Entity.Cache[entityUuid] = entity._serialize().data
       // Warm EntityCache so future requests for .expand can pull from cache
       if (json.included) {
         json.included.forEach((includedData) => {
           const includedEntity = Entity.FromResponse(includedData)
-          Entity.Cache[includedEntity.entityUuid] = includedEntity._serialize()
+          Entity.Cache[includedEntity.entityUuid] = includedEntity._serialize().data
         })
       }
       return entity
