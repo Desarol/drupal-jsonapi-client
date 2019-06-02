@@ -1,7 +1,7 @@
 {
   "env": {
     "test": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
     },
     "development": {
       "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
