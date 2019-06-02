@@ -12,6 +12,7 @@
     "test:examples": "node examples/",
     "lint": "eslint src",
     "build": "BABEL_ENV=production babel src --ignore '**/*.test.js' --out-dir lib",
+    "build:browser": "node browser.js",
     "prepublishOnly": "npm run clean && npm run lint && npm run test && npm run build"
   },
   "files": [
@@ -40,6 +41,8 @@
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "babel-eslint": "^10.0.1",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.7.0",
@@ -47,6 +50,7 @@
     "eslint-plugin-react": "^7.4.0",
     "jest": "^24.8.0",
     "node-fetch": "^2.6.0",
+    "puppeteer": "^1.17.0",
     "regenerator-runtime": "^0.13.2",
     "rimraf": "^2.6.2"
   },

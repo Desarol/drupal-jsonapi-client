@@ -1,13 +1,13 @@
 {
   "env": {
     "test": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 1 chrome version" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
     },
     "development": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 3 versions" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
     },
     "production": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "last 3 versions" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
     }
   }
 }

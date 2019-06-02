@@ -55,3 +55,30 @@ doRequest()
 ## Examples
 
 For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/master/examples).
+
+## Node Support
+
+- The library works in node.js with a polyfill for Request / Response objects.
+
+```js
+const { GlobalClient } = require('drupal-jsonapi-client')
+const { fetch, Request, Response } = require('node-fetch')
+global.Request = Request
+global.Response = Response
+// you might also want to use node-fetch's fetch as the transport:
+// GlobalClient.transport = fetch
+```
+
+## Browser Support
+
+https://netmarketshare.com
+
+- The library works in all major browsers without the need for polyfills
+  - Chrome
+  - Firefox
+  - Safari
+  - Edge
+
+- IE11 doesn't support a few features that will require polyfills
+  - Request and Response https://www.npmjs.com/package/whatwg-fetch
+  - Proxy https://www.npmjs.com/package/proxy-polyfill

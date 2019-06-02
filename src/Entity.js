@@ -23,18 +23,33 @@ export default class Entity {
    * @param {string} entityType
    * @param {string} entityBundle
    * @param {string} entityUuid
-   * @param {boolean} refreshCache
+   * @param {boolean} refreshCache            default = false
+   * @param {string[]} includeRelationships   default = []
    */
-  static async Load(entityType, entityBundle, entityUuid, refreshCache = false) {
+  static async Load(
+    entityType,
+    entityBundle,
+    entityUuid,
+    refreshCache = false,
+    includeRelationships = [],
+  ) {
     if (EntityCache[entityUuid] && refreshCache === false) {
       return Entity.FromResponse(EntityCache[entityUuid])
     }
 
-    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}`))
+    const queryParameters = new QueryParameters([`include=${includeRelationships.join(',')}`])
+    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}?${includeRelationships.length > 0 ? queryParameters.toString(Number.MAX_SAFE_INTEGER) : ''}`))
     const json = await response.json()
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
       EntityCache[entityUuid] = entity._serialize()
+      // Warm EntityCache so future requests for .expand can pull from cache
+      if (json.included) {
+        json.included.forEach((includedData) => {
+          const includedEntity = Entity.FromResponse(includedData)
+          EntityCache[includedEntity.entityUuid] = includedEntity._serialize()
+        })
+      }
       return entity
     }
 
