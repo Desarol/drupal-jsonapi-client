@@ -59,7 +59,7 @@ export default class Client {
 
     for (let i = 0; i < this.middleware.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
-      copy = await this.middleware[i](request)
+      copy = await this.middleware[i](copy)
     }
 
     return this.transport(copy)
