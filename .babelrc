@@ -4,10 +4,10 @@
       "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
     },
     "development": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "> 1%, not IE 9" } }]]
     },
     "production": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "cover 95%, not IE 9" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current", "browsers": "> 1%, not IE 9" } }]]
     }
   }
 }
