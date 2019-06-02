@@ -8,9 +8,9 @@ const TypeHeaders = {
   'Content-Type': 'application/vnd.api+json',
 }
 
-export const EntityCache = {}
-
 export default class Entity {
+  static Cache = {}
+
   static FromResponse(response) {
     const entity = new Entity()
     entity._applySerializedData(response)
@@ -33,8 +33,8 @@ export default class Entity {
     refreshCache = false,
     includeRelationships = [],
   ) {
-    if (EntityCache[entityUuid] && refreshCache === false) {
-      return Entity.FromResponse(EntityCache[entityUuid])
+    if (Entity.Cache[entityUuid] && refreshCache === false) {
+      return Entity.FromResponse(Entity.Cache[entityUuid])
     }
 
     const queryParameters = new QueryParameters([`include=${includeRelationships.join(',')}`])
@@ -42,12 +42,12 @@ export default class Entity {
     const json = await response.json()
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
-      EntityCache[entityUuid] = entity._serialize()
+      Entity.Cache[entityUuid] = entity._serialize()
       // Warm EntityCache so future requests for .expand can pull from cache
       if (json.included) {
         json.included.forEach((includedData) => {
           const includedEntity = Entity.FromResponse(includedData)
-          EntityCache[includedEntity.entityUuid] = includedEntity._serialize()
+          Entity.Cache[includedEntity.entityUuid] = includedEntity._serialize()
         })
       }
       return entity

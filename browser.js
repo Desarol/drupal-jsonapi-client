@@ -8,6 +8,9 @@ browserify(path.join(__dirname, './src/Browser.js'), { standalone: 'DrupalJsonAp
     presets: [
       ['@babel/preset-env', { targets: { browsers: '> 1%, not IE 9' } }],
     ],
+    plugins: [
+      '@babel/plugin-proposal-class-properties',
+    ],
   })
   .bundle()
   .pipe(fs.createWriteStream(path.join(__dirname, './lib/Browser.js')))
