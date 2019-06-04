@@ -11,10 +11,15 @@ export default class Client {
     this.authorization = authorization
     this.sendCookies = sendCookies
     this.middleware = middleware
+    this.user = null
   }
 
   async _fetchCSRFToken() {
-    const response = await this.transport(`${this.baseUrl || ''}/rest/session/token`)
+    if (this.user && this.user._csrfToken) {
+      return this.user._csrfToken
+    }
+
+    const response = await this.send(new Request(`${this.baseUrl || ''}/rest/session/token`))
     return response.text()
   }
 
@@ -48,7 +53,7 @@ export default class Client {
       referrerPolicy,
     })
 
-    if (this.sendCookies === true) {
+    if (this.sendCookies === true && url.indexOf('/rest/session/token') === -1) {
       const xCsrfToken = await this._fetchCSRFToken()
       copy.headers.set('X-CSRF-Token', xCsrfToken)
     }

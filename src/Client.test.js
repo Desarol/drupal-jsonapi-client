@@ -1,6 +1,3 @@
-/* eslint-disable import/first */
-require('regenerator-runtime/runtime') // eslint-disable-line
-
 import { Request, Response } from 'node-fetch'
 import Client from './Client'
 import Entity from './Entity'

@@ -38,7 +38,7 @@ export default class Entity {
     }
 
     const queryParameters = new QueryParameters([`include=${includeRelationships.join(',')}`])
-    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}?${includeRelationships.length > 0 ? queryParameters.toString(Number.MAX_SAFE_INTEGER) : ''}`))
+    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}${includeRelationships.length > 0 ? `?${queryParameters.toString()}` : ''}`))
     const json = await response.json()
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
@@ -84,6 +84,7 @@ export default class Entity {
       return json.data.map((item) => {
         const entity = new Entity()
         entity._applySerializedData(item)
+        Entity.Cache[entity.entityUuid] = entity._serialize().data
         return entity
       })
     }

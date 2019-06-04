@@ -1,3 +1,8 @@
+/**
+ * Array.prototype.flat() is not supported in IE.
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+ */
+
 /* eslint-disable */
 if (!Array.prototype.flat) {
   Array.prototype.flat = function(depth) {
