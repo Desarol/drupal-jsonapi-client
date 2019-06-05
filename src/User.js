@@ -19,9 +19,9 @@ export default class User extends Entity {
       entityType: 'user',
       entityBundle: 'user',
       filter: new Filter({
-        identifier: 'user-id',
-        path: 'uid',
-        value: data1.current_user.uid,
+        identifier: 'user-name',
+        path: 'name',
+        value: data1.current_user.name,
       }),
     })
 
@@ -30,9 +30,19 @@ export default class User extends Entity {
     return userEntity
   }
 
+  /**
+   * Register a new user with Drupal.
+   *
+   * To use this:
+   *  - enable REST resource /user/register
+   *  - allow users to enroll without email confirmation
+   *
+   * @param {string} email
+   * @param {string} username
+   * @param {string} password
+   */
   static async Register(email, username, password) {
     const csrfToken = await GlobalClient._fetchCSRFToken()
-
     const response1 = await GlobalClient.send(new Request('/user/register?_format=json', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
@@ -48,9 +58,9 @@ export default class User extends Entity {
       entityType: 'user',
       entityBundle: 'user',
       filter: new Filter({
-        identifier: 'user-id',
-        path: 'uid',
-        value: data1.current_user.uid,
+        identifier: 'user-name',
+        path: 'name',
+        value: data1.current_user.name,
       }),
     })
 
@@ -58,6 +68,30 @@ export default class User extends Entity {
     userEntity._csrfToken = data1.crsf_token
     userEntity._applySerializedData(userEntities[0]._serialize().data)
     return userEntity
+  }
+
+  /**
+   * Send an email confirmation to enroll a user.
+   *
+   * To use this:
+   *  - enable REST resource /user/register
+   *
+   * @param {string} email
+   * @param {string} username
+   *
+   * @return {object} response from /user/register
+   */
+  static async SendConfirmation(email, username) {
+    const csrfToken = await GlobalClient._fetchCSRFToken()
+    const response1 = await GlobalClient.send(new Request('/user/register?_format=json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+      body: JSON.stringify({
+        name: username,
+        mail: email,
+      }),
+    }))
+    return response1.json()
   }
 
   constructor(uuid, csrfToken) {
