@@ -1,11 +1,17 @@
 import GlobalClient from './GlobalClient'
 import Entity from './Entity'
 
-// File class does not exist in node.js
-if (!File || !FileReader) {
+const setPolyfill = () => {
   global.File = {}
   global.FileReader = function FileReader() {}
 }
+
+// File class does not exist in node.js
+try {
+  if (!File || !FileReader) {
+    setPolyfill()
+  }
+} catch (err) { setPolyfill() }
 
 // Named FileEntity to avoid namespace collisions in browsers
 export default class FileEntity extends Entity {

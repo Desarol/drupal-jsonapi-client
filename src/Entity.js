@@ -71,16 +71,31 @@ export default class Entity {
     entityType,
     entityBundle,
     filter = {},
+    include = [],
     pageOffset = 0,
     pageLimit = 50,
   }) {
     const filterQuery = typeof filter.query === 'function' ? filter.query() : filter
-    const queryParameters = new QueryParameters([filterQuery, `page[offset]=${pageOffset}`, `page[limit]=${pageLimit}`])
+    const queryParameters = new QueryParameters([
+      filterQuery,
+      include.length > 0 ? `include=${include.join(',')}` : null,
+      `page[offset]=${pageOffset}`,
+      `page[limit]=${pageLimit}`,
+    ])
 
     const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}?${queryParameters.toString(Number.MAX_SAFE_INTEGER)}`))
     const json = await response.json()
 
     if (json && json.data && json.data.length && json.data.length > 0) {
+      // Warm EntityCache so future requests for .expand can pull from cache
+      if (json.included && json.included.length) {
+        json.included.forEach((includedData) => {
+          const includedEntity = new Entity()
+          includedEntity._applySerializedData(includedData)
+          Entity.Cache[includedEntity.entityUuid] = includedEntity._serialize().data
+        })
+      }
+
       return json.data.map((item) => {
         const entity = new Entity()
         entity._applySerializedData(item)
