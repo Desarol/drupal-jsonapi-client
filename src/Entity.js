@@ -428,7 +428,7 @@ export default class Entity {
    * Save this entity.
    */
   save() {
-    GlobalClient.send(this._toSaveRequest())
+    return GlobalClient.send(this._toSaveRequest())
   }
 
   /**
@@ -451,6 +451,6 @@ export default class Entity {
    * Delete this entity.
    */
   delete() {
-    GlobalClient.send(this._toDeleteRequest())
+    return GlobalClient.send(this._toDeleteRequest())
   }
 }
