@@ -38,9 +38,17 @@ export default class Client {
       referrerPolicy,
     } = request;
 
+    // node.js Request doesn't have cookies
     const credentialsCopy = this.sendCookies === true ? 'same-origin' : credentials
 
-    let copy = new Request(this.baseUrl + url, {
+    // Browser Request.url is prefixed with origin when not origin not specified
+    let urlCopy = url
+    try {
+      const urlObject = new URL(url)
+      urlCopy = urlObject.pathname
+    } catch (err) { /* noop */ }
+
+    let copy = new Request(this.baseUrl + urlCopy, {
       body,
       cache,
       credentials: credentialsCopy,
