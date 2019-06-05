@@ -29,9 +29,9 @@ export default class QueryParameters {
   toString(depth) {
     return this.queryParameters
       .flat(depth)
-      .map(item => (item.query ? item.query() : item))
+      .map(item => (!!item && item.query ? item.query() : item))
       .flat(depth)
-      .filter(item => item !== '')
+      .filter(item => !!item)
       .join('&')
   }
 }
