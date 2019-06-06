@@ -94,6 +94,26 @@ export default class User extends Entity {
     return response1.json()
   }
 
+  /**
+   * Create a new Drupal user.
+   *
+   * @param {string} email
+   * @param {string} username
+   * @param {string} password
+   * @param {boolean} userEnabled
+   */
+  static async Create(email, username, password, userEnabled = true) {
+    const user = new User(null, null)
+    user.setAttribute('mail', email)
+    user.setAttribute('name', username)
+    user.setAttribute('pass', password)
+    user.setAttribute('status', userEnabled)
+    const response = await user.save()
+    const json = await response.json()
+    user._applySerializedData(json.data)
+    return user
+  }
+
   constructor(uuid, csrfToken) {
     super('user', 'user', uuid)
     this._csrfToken = csrfToken
