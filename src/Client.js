@@ -48,6 +48,12 @@ export default class Client {
       urlCopy = urlObject.pathname
     } catch (err) { /* noop */ }
 
+    // Browser Request.body is undefined
+    let bodyCopy = body
+    if (bodyCopy === undefined && method !== 'GET') {
+      bodyCopy = await request.text()
+    }
+
     let copy = new Request(this.baseUrl + urlCopy, {
       body,
       cache,
