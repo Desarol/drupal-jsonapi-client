@@ -55,7 +55,7 @@ export default class Client {
     }
 
     let copy = new Request(this.baseUrl + urlCopy, {
-      body,
+      body: bodyCopy,
       cache,
       credentials: credentialsCopy,
       headers,
