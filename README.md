@@ -59,8 +59,10 @@ For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-j
 ## Node Support
 
 - The library works in node.js with a polyfill for Request / Response objects.
+- `regenerator-runtime` is also required because IE11 lacks support for async / await.
 
 ```js
+require('regenerator-runtime/runtime');
 const { GlobalClient } = require('drupal-jsonapi-client')
 const { fetch, Request, Response } = require('node-fetch')
 global.Request = Request
