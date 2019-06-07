@@ -45,7 +45,7 @@ export default class Client {
     let urlCopy = url
     try {
       const urlObject = new URL(url)
-      urlCopy = urlObject.pathname
+      urlCopy = urlObject.pathname + urlObject.search
     } catch (err) { /* noop */ }
 
     // Browser Request.body is undefined
