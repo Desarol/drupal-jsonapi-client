@@ -24,6 +24,10 @@ export default class Client {
   }
 
   async send(request) {
+    if (!this.transport) {
+      throw new Error('No HTTP transport method provided. Pass a transport function to your Client or set GlobalClient.transport.')
+    }
+
     const {
       url,
       body,
@@ -81,6 +85,10 @@ export default class Client {
       copy = await this.middleware[i](copy)
     }
 
-    return this.transport(copy)
+    const response = this.transport(copy)
+    if (!response) {
+      throw new Error(`HTTP transport returned ${response}. Expected a Response.`)
+    }
+    return response
   }
 }

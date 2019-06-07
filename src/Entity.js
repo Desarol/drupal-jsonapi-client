@@ -134,18 +134,6 @@ export default class Entity {
       relationships: {},
     }
 
-    if (this._requiredFields) {
-      this._requiredFields.forEach((field) => {
-        if (field.field_type !== 'entity_reference') {
-          this._attributes[field.field_name] = ''
-        } else {
-          this._relationships[field.field_name] = {
-            data: {},
-          }
-        }
-      })
-    }
-
     // Setup proxy behaviour for fields
     return new Proxy(this, {
       get: (target, key) => {
@@ -452,5 +440,21 @@ export default class Entity {
    */
   delete() {
     return GlobalClient.send(this._toDeleteRequest())
+  }
+
+  /**
+   * Create a copy of this entity.
+   */
+  copy(withUuid = true) {
+    const copy = new Entity(this.entityType, this.entityBundle)
+
+    copy._attributes = this._attributes
+    copy._relationships = this._relationships
+    copy._changes = this._changes
+    if (withUuid) {
+      copy.entityUuid = this.entityUuid
+    }
+
+    return copy
   }
 }

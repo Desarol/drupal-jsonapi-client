@@ -9,7 +9,7 @@ describe('Client', () => {
   it('applies base URL', async () => {
     const BASE_URL = 'https://www.example.com'
     const PATH = '/jsonapi/node/article'
-    const transportMock = jest.fn()
+    const transportMock = jest.fn(() => Promise.resolve(new Response('')))
 
     const client = new Client({
       baseUrl: BASE_URL,
@@ -23,7 +23,7 @@ describe('Client', () => {
     const AUTHORIZATION = `Basic ${'asdf=='}`
 
     const entity = new Entity('node', 'article')
-    const transportMock = jest.fn()
+    const transportMock = jest.fn(() => Promise.resolve(new Response('')))
     const client = new Client({
       baseUrl: '',
       transport: transportMock,
