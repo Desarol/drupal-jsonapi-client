@@ -55,7 +55,12 @@ export default class Client {
     // Browser Request.body is undefined
     let bodyCopy = body
     if (bodyCopy === undefined && method !== 'GET') {
-      bodyCopy = await request.text()
+      const contentType = headers.get('content-type')
+      if (contentType === 'application/octet-stream') {
+        bodyCopy = await request.arrayBuffer()
+      } else {
+        bodyCopy = await request.text()
+      }
     }
 
     let copy = new Request(this.baseUrl + urlCopy, {
