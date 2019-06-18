@@ -2,8 +2,6 @@
 
 ## Browser
 
-You allow users to select files to upload.
-
 ```html
 <input type="file" name="field_image" />
 ```
