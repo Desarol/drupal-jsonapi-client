@@ -54,7 +54,7 @@ doRequest()
 
 ## Examples
 
-For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/master/examples).
+For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/3.x/examples).
 
 ## Node Support
 
