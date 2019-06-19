@@ -6,7 +6,7 @@ This package makes manipulating Drupal entities and resources easier via the JSO
 
 ## Sponsors
 
-[Desarol](https://www.desarol.com)
+[![Desarol](https://user-images.githubusercontent.com/1893118/59728701-c6887e00-9200-11e9-9128-2589d87dca87.png)](https://www.desarol.com)
 
 ## Installation
 ```
