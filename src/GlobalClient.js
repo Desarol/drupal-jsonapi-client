@@ -1,7 +1,8 @@
+import axios from 'axios'
 import Client from './Client'
 
 const GlobalClient = new Client({
-  transport: () => {},
+  transport: axios.request,
   baseUrl: '',
   authorization: null,
   sendCookies: false,

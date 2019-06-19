@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 export default class Client {
   constructor({
     transport,
@@ -8,7 +6,7 @@ export default class Client {
     sendCookies = false,
     middleware = [],
   }) {
-    this.transport = typeof transport === 'function' ? transport : axios.request
+    this.transport = transport
     this.baseUrl = baseUrl
     this.authorization = authorization
     this.sendCookies = sendCookies
