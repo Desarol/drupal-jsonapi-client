@@ -44,7 +44,7 @@ export default class FileEntity extends Entity {
         body: binary,
       }),
     )
-    const json = await response.json()
+    const json = response.data
 
     const fileEntity = new FileEntity()
     fileEntity._applySerializedData(json.data)

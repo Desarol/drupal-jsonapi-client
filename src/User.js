@@ -12,7 +12,7 @@ export default class User extends Entity {
         pass: password,
       }),
     }))
-    const data1 = await response1.json()
+    const data1 = await response1.data
 
     // We need to fetch by UID because /user/login doesn't return UUID
     const userEntities = await Entity.LoadMultiple({
@@ -53,7 +53,7 @@ export default class User extends Entity {
         'pass[pass2]': password,
       }),
     }))
-    const data1 = await response1.json()
+    const data1 = await response1.data
     const userEntities = await Entity.LoadMultiple({
       entityType: 'user',
       entityBundle: 'user',
@@ -91,7 +91,7 @@ export default class User extends Entity {
         mail: email,
       }),
     }))
-    return response1.json()
+    return response1.data
   }
 
   /**
@@ -109,7 +109,7 @@ export default class User extends Entity {
     user.setAttribute('pass', password)
     user.setAttribute('status', userEnabled)
     const response = await user.save()
-    const json = await response.json()
+    const json = await response.data
     user._applySerializedData(json.data)
     return user
   }

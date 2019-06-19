@@ -19,12 +19,12 @@ describe('User', () => {
       if (request.url === '/user/login?_format=json') {
         UserLoginResponse.csrf_token = CSRF_TOKEN
         UserLoginResponse.current_user.name = USERNAME
-        return new Response(JSON.stringify(UserLoginResponse))
+        return { data: UserLoginResponse }
       }
 
       if (request.url.indexOf('/jsonapi/user/user') === 0) {
         GetUserResponse.data[0].attributes.name = USERNAME
-        return new Response(JSON.stringify(GetUserResponse))
+        return { data: GetUserResponse }
       }
 
       return null

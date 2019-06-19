@@ -38,8 +38,11 @@ export default class Entity {
     }
 
     const queryParameters = new QueryParameters([`include=${includeRelationships.join(',')}`])
-    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}/${entityUuid}${includeRelationships.length > 0 ? `?${queryParameters.toString()}` : ''}`))
-    const json = await response.json()
+    const response = await GlobalClient.send({
+      url: `/jsonapi/${entityType}/${entityBundle}/${entityUuid}${includeRelationships.length > 0 ? `?${queryParameters.toString()}` : ''}`,
+      method: 'GET',
+    })
+    const json = response.data
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
       Entity.Cache[entityUuid] = entity._serialize().data
@@ -83,8 +86,11 @@ export default class Entity {
       `page[limit]=${pageLimit}`,
     ])
 
-    const response = await GlobalClient.send(new Request(`/jsonapi/${entityType}/${entityBundle}?${queryParameters.toString(Number.MAX_SAFE_INTEGER)}`))
-    const json = await response.json()
+    const response = await GlobalClient.send({
+      url: `/jsonapi/${entityType}/${entityBundle}?${queryParameters.toString(Number.MAX_SAFE_INTEGER)}`,
+      method: 'GET',
+    })
+    const json = response.data
 
     if (json && json.data && json.data.length && json.data.length > 0) {
       // Warm EntityCache so future requests for .expand can pull from cache
@@ -367,7 +373,8 @@ export default class Entity {
    * @param {any} binary
    */
   toUploadBinaryRequest(fieldName, fileName, binary) {
-    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}/${fieldName}`, {
+    return {
+      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${fieldName}`,
       method: 'POST',
       headers: {
         ...TypeHeaders,
@@ -375,15 +382,16 @@ export default class Entity {
         'Content-Disposition': `file; filename="${fileName}"`,
       },
       body: binary,
-    })
+    }
   }
 
   _toPostRequest() {
-    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}`, {
+    return {
+      url: `/jsonapi/${this.entityType}/${this.entityBundle}`,
       method: 'POST',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serialize()),
-    })
+    }
   }
 
   _toPatchRequest() {
@@ -391,11 +399,12 @@ export default class Entity {
       throw new MalformedEntity('Entity is missing UUID but was used in a PATCH request.')
     }
 
-    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`, {
+    return {
+      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
       method: 'PATCH',
       headers: { ...TypeHeaders },
       body: JSON.stringify(this._serializeChanges()),
-    })
+    }
   }
 
   /**
@@ -429,10 +438,11 @@ export default class Entity {
       throw new MalformedEntity('Cannot delete an entity without a UUID.')
     }
 
-    return new Request(`/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`, {
+    return {
+      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
       method: 'DELETE',
       headers: { ...TypeHeaders },
-    })
+    }
   }
 
   /**
