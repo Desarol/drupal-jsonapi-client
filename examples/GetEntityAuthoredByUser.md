@@ -11,14 +11,14 @@ const filter = new Filter({
 })
 const include = [] // if you want to fetch related entities
 const pageOffset = 0
-const pageLimit = 50
+const pageLimit = 50 // jsonapi doesn't let you fetch more than 50 at a time
 
 const entities = Entity.LoadMultiple(
   entityType,
   entityBundle,
   filter,
-  include = [],
-  pageOffset = 0,
-  pageLimit = 50,
+  include,
+  pageOffset,
+  pageLimit,
 );
 ```
