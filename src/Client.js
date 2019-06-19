@@ -33,7 +33,7 @@ export default class Client {
       throw new Error('No HTTP transport method provided. Pass a transport function to your Client or set GlobalClient.transport.')
     }
 
-    request.baseUrl = this.baseUrl
+    request.baseURL = this.baseUrl
 
     if (this.sendCookies === true) {
       request.withCredentials = true
