@@ -4,10 +4,6 @@
 
 This package makes manipulating Drupal entities and resources easier via the JSON:API module which is now in Drupal core (8.7.x).
 
-## Sponsors
-
-[![Desarol](https://user-images.githubusercontent.com/1893118/59728701-c6887e00-9200-11e9-9128-2589d87dca87.png)](https://www.desarol.com)
-
 ## Installation
 ```
 npm i --save drupal-jsonapi-client
@@ -88,3 +84,7 @@ https://netmarketshare.com
 - IE11 doesn't support a few features that will require polyfills
   - Request and Response https://www.npmjs.com/package/whatwg-fetch
   - Proxy https://www.npmjs.com/package/proxy-polyfill
+ 
+## Sponsors
+
+[![Desarol](https://user-images.githubusercontent.com/1893118/59728701-c6887e00-9200-11e9-9128-2589d87dca87.png)](https://www.desarol.com)
