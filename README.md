@@ -4,6 +4,10 @@
 
 This package makes manipulating Drupal entities and resources easier via the JSON:API module which is now in Drupal core (8.7.x).
 
+## Sponsors
+
+[Desarol](https://www.desarol.com)
+
 ## Installation
 ```
 npm i --save drupal-jsonapi-client
