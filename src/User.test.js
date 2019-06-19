@@ -1,15 +1,11 @@
 /* eslint-disable import/first */
 require('regenerator-runtime/runtime') // eslint-disable-line
 
-import { Request, Response } from 'node-fetch'
 import GlobalClient from './GlobalClient'
 import User from './User'
 
 import UserLoginResponse from './__data__/response_4.json'
 import GetUserResponse from './__data__/response_3.json'
-
-global.Request = Request
-global.Response = Response
 
 describe('User', () => {
   it('can login and fetch user information', async () => {

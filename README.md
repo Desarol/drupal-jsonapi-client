@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/master.svg?style=svg)](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/master)
+[![CircleCI](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/3.x.svg?style=svg)](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/3.x)
 
 # Drupal JSON:API Client
 

@@ -1,12 +1,8 @@
 /* eslint-disable import/first */
 require('regenerator-runtime/runtime') // eslint-disable-line
 
-import { Request, Response } from 'node-fetch'
 import Filter from './Filter'
 import QueryParameters from './QueryParameters';
-
-global.Request = Request
-global.Response = Response
 
 describe('Filter', () => {
   it('serializes simple filter to a query', () => {

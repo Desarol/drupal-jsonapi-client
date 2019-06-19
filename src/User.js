@@ -4,14 +4,15 @@ import GlobalClient from './GlobalClient'
 
 export default class User extends Entity {
   static async Login(username, password) {
-    const response1 = await GlobalClient.send(new Request('/user/login?_format=json', {
+    const response1 = await GlobalClient.send({
+      url: '/user/login?_format=json',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: username,
         pass: password,
       }),
-    }))
+    })
     const data1 = await response1.data
 
     // We need to fetch by UID because /user/login doesn't return UUID
@@ -43,7 +44,8 @@ export default class User extends Entity {
    */
   static async Register(email, username, password) {
     const csrfToken = await GlobalClient._fetchCSRFToken()
-    const response1 = await GlobalClient.send(new Request('/user/register?_format=json', {
+    const response1 = await GlobalClient.send({
+      url: '/user/register?_format=json',
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
       body: JSON.stringify({
@@ -52,7 +54,7 @@ export default class User extends Entity {
         'pass[pass1]': password,
         'pass[pass2]': password,
       }),
-    }))
+    })
     const data1 = await response1.data
     const userEntities = await Entity.LoadMultiple({
       entityType: 'user',
@@ -83,14 +85,15 @@ export default class User extends Entity {
    */
   static async SendConfirmation(email, username) {
     const csrfToken = await GlobalClient._fetchCSRFToken()
-    const response1 = await GlobalClient.send(new Request('/user/register?_format=json', {
+    const response1 = await GlobalClient.send({
+      url: '/user/register?_format=json',
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
       body: JSON.stringify({
         name: username,
         mail: email,
       }),
-    }))
+    })
     return response1.data
   }
 

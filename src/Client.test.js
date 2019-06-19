@@ -1,15 +1,11 @@
-import { Request, Response } from 'node-fetch'
 import Client from './Client'
 import Entity from './Entity'
-
-global.Request = Request
-global.Response = Response
 
 describe('Client', () => {
   it('applies base URL', async () => {
     const BASE_URL = 'https://www.example.com'
     const PATH = '/jsonapi/node/article'
-    const transportMock = jest.fn(() => Promise.resolve(new Response('')))
+    const transportMock = jest.fn(() => Promise.resolve({ data: {} }))
 
     const client = new Client({
       baseUrl: BASE_URL,
@@ -26,7 +22,7 @@ describe('Client', () => {
     const AUTHORIZATION = `Basic ${'asdf=='}`
 
     const entity = new Entity('node', 'article')
-    const transportMock = jest.fn(() => Promise.resolve(new Response('')))
+    const transportMock = jest.fn(() => Promise.resolve({ data: {} }))
     const client = new Client({
       baseUrl: '',
       transport: transportMock,
