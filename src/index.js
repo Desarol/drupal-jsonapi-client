@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime'
+
 export { default as Client } from './Client'
 export { default as Entity } from './Entity'
 export { default as User } from './User'

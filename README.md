@@ -14,7 +14,7 @@ yarn add drupal-jsonapi-client
 ```
 
 ## Key features
-- **Lightweight** - HTTP library agnostic, zero dependencies
+- **Lightweight** - HTTP library agnostic, defaults to `axios` (3kb)
 - **Cross platform** - works in node.js and the browser
 - **Drupal specific** - abstracts away the nuances of working with Drupal's JSON:API implementation
 - **Object oriented** - leverages ES6 classes to neatly package JSON:API objects
@@ -56,31 +56,21 @@ doRequest()
 
 For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/3.x/examples).
 
-## Node Support
+## Environment support
 
-- The library works in node.js with a polyfill for Request / Response objects.
-- `regenerator-runtime` is also required because IE11 lacks support for async / await.
+### Node.js
 
-```js
-require('regenerator-runtime/runtime');
-const { GlobalClient } = require('drupal-jsonapi-client')
-const { fetch, Request, Response } = require('node-fetch')
-global.Request = Request
-global.Response = Response
-// you might also want to use node-fetch's fetch as the transport:
-// GlobalClient.transport = fetch
-```
+node.js >= 6.0.0
 
-## Browser Support
+### Browsers
 
 https://netmarketshare.com
 
-- The library works in all major browsers without the need for polyfills
+We bundle `regenerator-runtime` and `proxy-polyfill` so that the library works out of the box in IE11.
+
+- The library works in:
   - Chrome
   - Firefox
   - Safari
   - Edge
-
-- IE11 doesn't support a few features that will require polyfills
-  - Request and Response https://www.npmjs.com/package/whatwg-fetch
-  - Proxy https://www.npmjs.com/package/proxy-polyfill
+  - IE11
