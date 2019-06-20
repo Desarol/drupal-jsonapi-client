@@ -28,7 +28,7 @@ It's still in an early stage and contributions are welcome. The general idea is 
 Here's some syntax sugar to sink your teeth into that illustrates the vision:
 
 ```js
-import { GlobalClient, Entity } from 'drupal-json-client'
+import { GlobalClient, Entity } from 'drupal-jsonapi-client'
 
 GlobalClient.baseUrl = 'https://www.example.com'
 GlobalClient.sendCookies = true // use this when running code on the same origin as Drupal
