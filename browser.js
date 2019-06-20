@@ -12,5 +12,6 @@ browserify(path.join(__dirname, './src/Browser.js'), { standalone: 'DrupalJsonAp
       '@babel/plugin-proposal-class-properties',
     ],
   })
+  .transform('uglifyify', { global: true })
   .bundle()
-  .pipe(fs.createWriteStream(path.join(__dirname, './lib/Browser.js')))
+  .pipe(fs.createWriteStream(path.join(__dirname, './lib/Browser.min.js')))

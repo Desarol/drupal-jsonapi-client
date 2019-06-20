@@ -53,7 +53,8 @@
     "jest": "^24.8.0",
     "node-fetch": "^2.6.0",
     "puppeteer": "^1.17.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "uglifyify": "^5.0.1"
   },
   "dependencies": {
     "axios": "^0.19.0",
