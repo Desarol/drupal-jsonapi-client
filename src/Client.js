@@ -19,8 +19,11 @@ export default class Client {
       return this.user._csrfToken
     }
 
-    const response = await this.send(new Request(`${this.baseUrl || ''}/rest/session/token`))
-    return response.text()
+    const response = await this.send({
+      url: '/rest/session/token',
+      method: 'GET',
+    })
+    return response.data
   }
 
   async send(request) {
@@ -28,72 +31,33 @@ export default class Client {
       throw new Error('No HTTP transport method provided. Pass a transport function to your Client or set GlobalClient.transport.')
     }
 
-    const {
-      url,
-      body,
-      cache,
-      credentials,
-      headers,
-      integrity,
-      method,
-      mode,
-      redirect,
-      referrer,
-      referrerPolicy,
-    } = request;
+    request.baseURL = this.baseUrl
 
-    // node.js Request doesn't have cookies
-    const credentialsCopy = this.sendCookies === true ? 'same-origin' : credentials
+    if (this.sendCookies === true) {
+      request.withCredentials = true
 
-    // Browser Request.url is prefixed with origin when not origin not specified
-    let urlCopy = url
-    try {
-      const urlObject = new URL(url)
-      urlCopy = urlObject.pathname + urlObject.search
-    } catch (err) { /* noop */ }
-
-    // Browser Request.body is undefined
-    let bodyCopy = body
-    if (bodyCopy === undefined && method !== 'GET') {
-      const contentType = headers.get('content-type')
-      if (contentType === 'application/octet-stream') {
-        bodyCopy = await request.arrayBuffer()
-      } else {
-        bodyCopy = await request.text()
+      // When authenticating using cookies, X-CSRF-Token header must be set
+      if (request.url.indexOf('/rest/session/token') === -1) {
+        const xCsrfToken = await this._fetchCSRFToken()
+        request.headers['X-CSRF-Token'] = xCsrfToken
       }
     }
 
-    let copy = new Request(this.baseUrl + urlCopy, {
-      body: bodyCopy,
-      cache,
-      credentials: credentialsCopy,
-      headers,
-      integrity,
-      method,
-      mode,
-      redirect,
-      referrer,
-      referrerPolicy,
-    })
-
-    if (this.sendCookies === true && url.indexOf('/rest/session/token') === -1) {
-      const xCsrfToken = await this._fetchCSRFToken()
-      copy.headers.set('X-CSRF-Token', xCsrfToken)
-    }
-
     if (typeof this.authorization === 'string') {
-      copy.headers.set('Authorization', this.authorization)
+      request.headers.Authorization = this.authorization
     }
 
+    let requestCopy = request
     for (let i = 0; i < this.middleware.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
-      copy = await this.middleware[i](copy)
+      requestCopy = await this.middleware[i](requestCopy)
     }
 
-    const response = this.transport(copy)
+    const response = this.transport(requestCopy)
     if (!response) {
       throw new Error(`HTTP transport returned ${response}. Expected a Response.`)
     }
+
     return response
   }
 }

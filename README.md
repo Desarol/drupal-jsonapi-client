@@ -1,4 +1,6 @@
-[![CircleCI](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/master.svg?style=svg)](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/master)
+[![npm downloads](https://img.shields.io/npm/dt/drupal-jsonapi-client.svg?maxAge=2592000)](http://npmjs.com/package/drupal-jsonapi-client)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/drupal-jsonapi-client@3.0.0/lib/Browser.min.js)]()
+[![version](https://img.shields.io/npm/v/drupal-jsonapi-client.svg)]()
 
 # Drupal JSON:API Client
 
@@ -14,7 +16,7 @@ yarn add drupal-jsonapi-client
 ```
 
 ## Key features
-- **Lightweight** - HTTP library agnostic, zero dependencies
+- **Lightweight** - HTTP library agnostic, defaults to `axios` (3kb)
 - **Cross platform** - works in node.js and the browser
 - **Drupal specific** - abstracts away the nuances of working with Drupal's JSON:API implementation
 - **Object oriented** - leverages ES6 classes to neatly package JSON:API objects
@@ -25,9 +27,8 @@ It's still in an early stage and contributions are welcome. The general idea is 
 Here's some syntax sugar to sink your teeth into that illustrates the vision:
 
 ```js
-import { GlobalClient, Entity } from 'drupal-json-client'
+import { GlobalClient, Entity } from 'drupal-jsonapi-client'
 
-GlobalClient.transport = fetch
 GlobalClient.baseUrl = 'https://www.example.com'
 GlobalClient.sendCookies = true // use this when running code on the same origin as Drupal
 
@@ -54,37 +55,22 @@ doRequest()
 
 ## Examples
 
-For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/3.x/examples).
+For more detailed usage, see the [examples](https://github.com/Desarol/drupal-jsonapi-client/tree/3.x/examples).
 
-## Node Support
+## Environment support
 
-- The library works in node.js with a polyfill for Request / Response objects.
-- `regenerator-runtime` is also required because IE11 lacks support for async / await.
+### Node.js
 
-```js
-require('regenerator-runtime/runtime');
-const { GlobalClient } = require('drupal-jsonapi-client')
-const { fetch, Request, Response } = require('node-fetch')
-global.Request = Request
-global.Response = Response
-// you might also want to use node-fetch's fetch as the transport:
-// GlobalClient.transport = fetch
-```
+node.js >= 6.0.0
 
-## Browser Support
+### Browsers
+
+The library works in all modern browsers.
 
 https://netmarketshare.com
 
-- The library works in all major browsers without the need for polyfills
-  - Chrome
-  - Firefox
-  - Safari
-  - Edge
+We bundle `regenerator-runtime` and `proxy-polyfill` so that the library works out of the box in IE11.
 
-- IE11 doesn't support a few features that will require polyfills
-  - Request and Response https://www.npmjs.com/package/whatwg-fetch
-  - Proxy https://www.npmjs.com/package/proxy-polyfill
- 
 ## Sponsors
 
 [![Desarol](https://user-images.githubusercontent.com/1893118/59728701-c6887e00-9200-11e9-9128-2589d87dca87.png)](https://www.desarol.com)
