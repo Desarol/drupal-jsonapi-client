@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/3.x.svg?style=svg)](https://circleci.com/gh/Auspicus/drupal-jsonapi-client/tree/3.x)
 [![npm downloads](https://img.shields.io/npm/dt/drupal-jsonapi-client.svg?maxAge=2592000)](http://npmjs.com/package/drupal-jsonapi-client)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/drupal-jsonapi-client@3.0.0/lib/Browser.min.js)]()
 [![version](https://img.shields.io/npm/v/drupal-jsonapi-client.svg)]()
@@ -56,7 +55,7 @@ doRequest()
 
 ## Examples
 
-For more detailed usage, see the [examples](https://github.com/Auspicus/drupal-jsonapi-client/tree/3.x/examples).
+For more detailed usage, see the [examples](https://github.com/Desarol/drupal-jsonapi-client/tree/3.x/examples).
 
 ## Environment support
 
