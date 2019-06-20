@@ -1,15 +1,24 @@
 import GlobalClient from './GlobalClient'
 import Entity from './Entity'
 
-const setPolyfill = () => {
-  global.File = function File() {}
-  global.FileReader = function FileReader() {}
-}
+(function PolyfillFiles(scope) {
+  if (scope.File) {
+    return;
+  }
 
-// File class does not exist in node.js
-if (File === undefined || FileReader === undefined) {
-  setPolyfill()
-}
+  scope.File = function File() {} // eslint-disable-line
+  scope.FileReader = function FileReader() {} // eslint-disable-line
+}(
+  (
+    typeof process !== 'undefined'
+    && {}.toString.call(process) === '[object process]'
+  )
+  || (
+    typeof navigator !== 'undefined'
+    && navigator.product === 'ReactNative'
+  ) ? global
+    : self // eslint-disable-line
+));
 
 // Named FileEntity to avoid namespace collisions in browsers
 export default class FileEntity extends Entity {
