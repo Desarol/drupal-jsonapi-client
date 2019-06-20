@@ -15,6 +15,8 @@ npm i --save drupal-jsonapi-client
 yarn add drupal-jsonapi-client
 ```
 
+## Usage
+
 ES6 module
 
 ```js
