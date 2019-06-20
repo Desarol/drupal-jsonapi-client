@@ -41,7 +41,7 @@ export default class FileEntity extends Entity {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': `file; filename="${fileName}"`,
       },
-      body: binary,
+      data: binary,
     })
     const json = response.data
 

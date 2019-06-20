@@ -8,7 +8,7 @@ export default class User extends Entity {
       url: '/user/login?_format=json',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      data: JSON.stringify({
         name: username,
         pass: password,
       }),
@@ -48,7 +48,7 @@ export default class User extends Entity {
       url: '/user/register?_format=json',
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
-      body: JSON.stringify({
+      data: JSON.stringify({
         name: username,
         mail: email,
         'pass[pass1]': password,
@@ -89,7 +89,7 @@ export default class User extends Entity {
       url: '/user/register?_format=json',
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
-      body: JSON.stringify({
+      data: JSON.stringify({
         name: username,
         mail: email,
       }),

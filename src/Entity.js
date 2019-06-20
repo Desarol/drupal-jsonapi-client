@@ -381,7 +381,7 @@ export default class Entity {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': `file; filename="${fileName}"`,
       },
-      body: binary,
+      data: binary,
     }
   }
 
@@ -390,7 +390,7 @@ export default class Entity {
       url: `/jsonapi/${this.entityType}/${this.entityBundle}`,
       method: 'POST',
       headers: { ...TypeHeaders },
-      body: JSON.stringify(this._serialize()),
+      data: JSON.stringify(this._serialize()),
     }
   }
 
@@ -403,7 +403,7 @@ export default class Entity {
       url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
       method: 'PATCH',
       headers: { ...TypeHeaders },
-      body: JSON.stringify(this._serializeChanges()),
+      data: JSON.stringify(this._serializeChanges()),
     }
   }
 
