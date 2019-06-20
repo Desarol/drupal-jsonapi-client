@@ -32,6 +32,7 @@ export default class Client {
     }
 
     request.baseURL = this.baseUrl
+    request.headers = request.headers || {}
 
     if (this.sendCookies === true) {
       request.withCredentials = true
