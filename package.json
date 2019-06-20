@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Auspicus/drupal-jsonapi-client.git"
+    "url": "git+https://github.com/Desarol/drupal-jsonapi-client.git"
   },
   "keywords": [
     "drupal",
@@ -34,9 +34,9 @@
   "author": "David Disch <davidedisch@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Auspicus/drupal-jsonapi-client.git/issues"
+    "url": "https://github.com/Desarol/drupal-jsonapi-client.git/issues"
   },
-  "homepage": "https://github.com/Auspicus/drupal-jsonapi-client.git#readme",
+  "homepage": "https://github.com/Desarol/drupal-jsonapi-client.git#readme",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
