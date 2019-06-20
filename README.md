@@ -15,6 +15,27 @@ npm i --save drupal-jsonapi-client
 yarn add drupal-jsonapi-client
 ```
 
+ES6 module
+
+```js
+import { GlobalClient, Entity ... } from 'drupal-jsonapi-client'
+```
+
+UMD
+
+```html
+<script src="https://unpkg.com/drupal-jsonapi-client@3.0.0/lib/Browser.min.js"></script>
+<script>
+  const Entity = window.DrupalJsonApi.Entity
+  
+  Entity
+  .Load('node', 'article', 'uuid')
+  .then(entity => {
+    console.log(entity)
+  })
+</script>
+```
+
 ## Key features
 - **Lightweight** - HTTP library agnostic, defaults to `axios` (3kb)
 - **Cross platform** - works in node.js and the browser
