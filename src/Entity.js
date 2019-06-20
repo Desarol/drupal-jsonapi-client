@@ -1,6 +1,3 @@
-// START: IE11 polyfills
-import 'proxy-polyfill'
-// END: IE11 polyfills
 import EntityNotFound from './Error/EntityNotFound'
 import MalformedEntity from './Error/MalformedEntity'
 import GlobalClient from './GlobalClient'

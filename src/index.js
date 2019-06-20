@@ -1,4 +1,7 @@
+// START: IE11 polyfills
 import 'regenerator-runtime/runtime'
+import 'proxy-polyfill'
+// END: IE11 polyfills
 
 export { default as Client } from './Client'
 export { default as Entity } from './Entity'
