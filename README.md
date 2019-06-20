@@ -66,16 +66,11 @@ node.js >= 6.0.0
 
 ### Browsers
 
+The library works in all modern browsers.
+
 https://netmarketshare.com
 
 We bundle `regenerator-runtime` and `proxy-polyfill` so that the library works out of the box in IE11.
-
-- The library works in:
-  - Chrome
-  - Firefox
-  - Safari
-  - Edge
-  - IE11
 
 ## Sponsors
 
