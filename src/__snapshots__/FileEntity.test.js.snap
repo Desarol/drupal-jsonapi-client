@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileEntity FileEntity.Delete 1`] = `
+Object {
+  "baseURL": "",
+  "headers": Object {
+    "Accept": "application/vnd.api+json",
+    "Content-Type": "application/vnd.api+json",
+  },
+  "method": "DELETE",
+  "url": "/jsonapi/file/file/1234",
+}
+`;

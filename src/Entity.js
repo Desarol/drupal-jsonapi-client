@@ -41,6 +41,7 @@ export default class Entity {
     const response = await GlobalClient.send({
       url: `/jsonapi/${entityType}/${entityBundle}/${entityUuid}${includeRelationships.length > 0 ? `?${queryParameters.toString()}` : ''}`,
       method: 'GET',
+      headers: TypeHeaders,
     })
     const json = response.data
     if (json && json.data) {
@@ -89,6 +90,7 @@ export default class Entity {
     const response = await GlobalClient.send({
       url: `/jsonapi/${entityType}/${entityBundle}?${queryParameters.toString(Number.MAX_SAFE_INTEGER)}`,
       method: 'GET',
+      headers: TypeHeaders,
     })
     const json = response.data
 

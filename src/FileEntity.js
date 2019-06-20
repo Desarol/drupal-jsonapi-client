@@ -59,6 +59,15 @@ export default class FileEntity extends Entity {
     return fileEntity
   }
 
+  /**
+   * Delete a remote file.
+   *
+   * @param {string} fileUuid
+   */
+  static async Delete(fileUuid) {
+    return super.Delete('file', 'file', fileUuid);
+  }
+
   constructor(uuid) {
     super('file', 'file', uuid)
   }
