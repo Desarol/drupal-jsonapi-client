@@ -1,5 +1,5 @@
 [![npm downloads](https://img.shields.io/npm/dt/drupal-jsonapi-client.svg?maxAge=2592000)](http://npmjs.com/package/drupal-jsonapi-client)
-[![gzip size](http://img.badgesize.io/https://unpkg.com/drupal-jsonapi-client@3.0.0/lib/Browser.min.js)]()
+[![gzip size](https://img.badgesize.io/https://unpkg.com/drupal-jsonapi-client@3.0.0/lib/Browser.min.js)]()
 [![version](https://img.shields.io/npm/v/drupal-jsonapi-client.svg)]()
 
 # Drupal JSON:API Client
@@ -13,6 +13,29 @@ npm i --save drupal-jsonapi-client
 
 ```
 yarn add drupal-jsonapi-client
+```
+
+## Usage
+
+ES6 module
+
+```js
+import { GlobalClient, Entity ... } from 'drupal-jsonapi-client'
+```
+
+UMD
+
+```html
+<script src="https://unpkg.com/drupal-jsonapi-client@3.0.0/lib/Browser.min.js"></script>
+<script>
+  const Entity = window.DrupalJsonApi.Entity
+  
+  Entity
+  .Load('node', 'article', 'uuid')
+  .then(entity => {
+    console.log(entity)
+  })
+</script>
 ```
 
 ## Key features
