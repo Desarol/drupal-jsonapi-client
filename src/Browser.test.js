@@ -9,7 +9,7 @@ describe('Browser', () => {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
-    await page.addScriptTag({ path: path.join(__dirname, '../lib/Browser.js') })
+    await page.addScriptTag({ path: path.join(__dirname, '../lib/Browser.min.js') })
     const result = await page.evaluate(() => (
       new window.DrupalJsonApi.QueryParameters(['page[offset]=0', 'page[limit]=50']).toString()
     ))

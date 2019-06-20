@@ -1,5 +1,5 @@
 // START: IE11 polyfills
-import ProxyPolyfill from 'proxy-polyfill/src/proxy'
+import 'proxy-polyfill'
 // END: IE11 polyfills
 import EntityNotFound from './Error/EntityNotFound'
 import MalformedEntity from './Error/MalformedEntity'
@@ -144,7 +144,7 @@ export default class Entity {
     }
 
     // Setup proxy behaviour for fields
-    return new ProxyPolyfill(this, {
+    return new Proxy(this, {
       get: (target, key) => {
         let fieldName = key
 

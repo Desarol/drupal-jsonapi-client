@@ -13,7 +13,7 @@ describe('Entity', () => {
     entity.setAttribute('body', { value: '<p>Drupal rocks!</p>' })
     const request = entity._toPatchRequest()
     expect(request.method).toEqual('PATCH')
-    expect(request.body.toString()).toMatchSnapshot()
+    expect(request.data).toMatchSnapshot()
   })
 
   it('serializes post request to include entity information', () => {
@@ -22,6 +22,6 @@ describe('Entity', () => {
     entity.setRelationship('field_reference', { id: '04808c36-9a01-4503-952d-f4dd88a1186a' })
     const request = entity._toPostRequest()
     expect(request.method).toEqual('POST')
-    expect(request.body.toString()).toMatchSnapshot()
+    expect(request.data).toMatchSnapshot()
   })
 })
