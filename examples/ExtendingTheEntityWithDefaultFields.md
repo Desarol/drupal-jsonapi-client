@@ -24,7 +24,7 @@ const createAndSaveArticle = async () => {
   const article = new Article('uuid')
   article.title = 'asdf'
   article.body.value = '<p>Hello world!</p>'
-  article.save()
+  await article.save()
 }
 createAndSaveArticle()
 ```
