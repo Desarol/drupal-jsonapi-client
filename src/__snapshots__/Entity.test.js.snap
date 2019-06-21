@@ -77,3 +77,18 @@ Entity {
 exports[`Entity serializes patch request to include changes 1`] = `"{\\"data\\":{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"body\\":{\\"value\\":\\"<p>Drupal rocks!</p>\\"}},\\"id\\":\\"04808c36-9a01-4503-952d-f4dd88a1186a\\"}}"`;
 
 exports[`Entity serializes post request to include entity information 1`] = `"{\\"data\\":{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"body\\":{\\"value\\":\\"<p>Drupal rocks!</p>\\"}},\\"relationships\\":{\\"field_reference\\":{\\"id\\":\\"04808c36-9a01-4503-952d-f4dd88a1186a\\"}}}}"`;
+
+exports[`Entity should not throw an error when serializing a response that does not contain relationships 1`] = `
+Entity {
+  "_attributes": Object {},
+  "_changes": Object {
+    "attributes": Object {},
+    "relationships": Object {},
+  },
+  "_enforceNew": false,
+  "_relationships": Object {},
+  "entityBundle": "article",
+  "entityType": "node",
+  "entityUuid": "id",
+}
+`;

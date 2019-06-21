@@ -202,19 +202,23 @@ export default class Entity {
     this.entityType = entityType
     this.entityBundle = entityBundle
     this.entityUuid = jsonApiSerialization.id
-    this._attributes = jsonApiSerialization.attributes
-    this._relationships = Object
-      .keys(jsonApiSerialization.relationships)
-      .map(key => ({ data: jsonApiSerialization.relationships[key].data, _$key: key }))
-      .reduce((prev, curr) => {
-        const key = curr._$key
-        const copy = curr
-        delete copy._$key
-        return ({
-          ...prev,
-          [key]: copy,
-        })
-      }, {})
+    this._attributes = jsonApiSerialization.attributes || {}
+    if (jsonApiSerialization.relationships) {
+      this._relationships = Object
+        .keys(jsonApiSerialization.relationships)
+        .map(key => ({ data: jsonApiSerialization.relationships[key].data, _$key: key }))
+        .reduce((prev, curr) => {
+          const key = curr._$key
+          const copy = curr
+          delete copy._$key
+          return ({
+            ...prev,
+            [key]: copy,
+          })
+        }, {})
+    } else {
+      this._relationships = {}
+    }
   }
 
   _serializeChanges() {

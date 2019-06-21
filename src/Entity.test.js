@@ -24,4 +24,14 @@ describe('Entity', () => {
     expect(request.method).toEqual('POST')
     expect(request.data).toMatchSnapshot()
   })
+
+  it('should not throw an error when serializing a response that does not contain relationships', () => {
+    const entity = new Entity('node', 'article')
+    entity._applySerializedData({
+      id: 'id',
+      type: 'node--article',
+      attributes: {},
+    })
+    expect(entity).toMatchSnapshot()
+  })
 })
