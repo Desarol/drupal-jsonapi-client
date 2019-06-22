@@ -59,6 +59,10 @@ export default class FileEntity extends Entity {
     return fileEntity
   }
 
+  static async Load(fileUuid, includeRelationships = [], refreshCache = false) {
+    return super.Load('file', 'file', fileUuid, includeRelationships, refreshCache)
+  }
+
   /**
    * Delete a remote file.
    *

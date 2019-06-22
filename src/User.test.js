@@ -5,7 +5,6 @@ import GlobalClient from './GlobalClient'
 import User from './User'
 
 import UserLoginResponse from './__data__/response_4.json'
-import GetUserResponse from './__data__/response_3.json'
 
 describe('User', () => {
   it('can login and fetch user information', async () => {
@@ -18,19 +17,14 @@ describe('User', () => {
         return { data: UserLoginResponse }
       }
 
-      if (request.url.indexOf('/jsonapi/user/user') === 0) {
-        GetUserResponse.data[0].attributes.name = USERNAME
-        return { data: GetUserResponse }
-      }
-
       return null
     }
 
     const user = await User.Login(USERNAME, 'password')
 
-    expect(user).toBeInstanceOf(User)
-    expect(user._csrfToken).toEqual(CSRF_TOKEN)
-    expect(user.name).toEqual(USERNAME)
+    expect(user).toMatchSnapshot()
+    expect(user.csrf_token).toEqual(CSRF_TOKEN)
+    expect(user.current_user.name).toEqual(USERNAME)
   })
 
   it('can be set as default user', async () => {
