@@ -46,12 +46,12 @@ export default class Entity {
     const json = response.data
     if (json && json.data) {
       const entity = Entity.FromResponse(json.data)
-      Entity.Cache[entityUuid] = entity._serialize().data
+      Entity.Cache[entityUuid] = { ...entity._serialize().data, id: entity.entityUuid }
       // Warm EntityCache so future requests for .expand can pull from cache
       if (json.included) {
         json.included.forEach((includedData) => {
           const includedEntity = Entity.FromResponse(includedData)
-          Entity.Cache[includedEntity.entityUuid] = includedEntity._serialize().data
+          Entity.Cache[includedEntity.entityUuid] = { ...includedEntity._serialize().data, id: includedEntity.entityUuid }
         })
       }
       return entity
@@ -100,14 +100,17 @@ export default class Entity {
         json.included.forEach((includedData) => {
           const includedEntity = new Entity()
           includedEntity._applySerializedData(includedData)
-          Entity.Cache[includedEntity.entityUuid] = includedEntity._serialize().data
+          Entity.Cache[includedEntity.entityUuid] = {
+            ...includedEntity._serialize().data,
+            id: includedEntity.entityUuid,
+          }
         })
       }
 
       return json.data.map((item) => {
         const entity = new Entity()
         entity._applySerializedData(item)
-        Entity.Cache[entity.entityUuid] = entity._serialize().data
+        Entity.Cache[entity.entityUuid] = { ...entity._serialize().data, id: entity.entityUuid }
         return entity
       })
     }
@@ -300,6 +303,7 @@ export default class Entity {
 
   /**
    * Get an expanded representation of a related entity.
+   * Only works for a relationship to a single entity.
    *
    * @param {string} fieldName
    */
