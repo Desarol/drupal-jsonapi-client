@@ -51,7 +51,10 @@ export default class Entity {
       if (json.included) {
         json.included.forEach((includedData) => {
           const includedEntity = Entity.FromResponse(includedData)
-          Entity.Cache[includedEntity.entityUuid] = { ...includedEntity._serialize().data, id: includedEntity.entityUuid }
+          Entity.Cache[includedEntity.entityUuid] = {
+            ...includedEntity._serialize().data,
+            id: includedEntity.entityUuid,
+          }
         })
       }
       return entity
