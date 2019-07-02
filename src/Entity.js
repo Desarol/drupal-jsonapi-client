@@ -139,8 +139,8 @@ export default class Entity {
     this.entityType = entityType
     this.entityBundle = entityBundle
     this.entityUuid = entityUuid || null
+    this.enforceNew = false
 
-    this._enforceNew = false
     this._attributes = {}
     this._relationships = {}
     this._changes = {
@@ -183,7 +183,8 @@ export default class Entity {
         }
 
         if (!(fieldName in target)) {
-          if (target.set(fieldName, value) === true) {
+          if (target._hasField(fieldName)) {
+            target.set(fieldName, value)
             return true
           }
         }
@@ -247,7 +248,7 @@ export default class Entity {
     return { data: this.getChange(fieldName) }
   }
 
-  _serialize() {
+  _serialize(withId = false) {
     const serialization = {
       data: {
         type: `${this.entityType}--${this.entityBundle}`,
@@ -264,6 +265,10 @@ export default class Entity {
       delete serialization.data.relationships
     }
 
+    if (withId && this.entityUuid) {
+      serialization.data.id = this.entityUuid
+    }
+
     return serialization
   }
 
@@ -278,6 +283,7 @@ export default class Entity {
    * Get field value.
    *
    * @param {string} fieldName
+   * @param {boolean} strict    default: false
    */
   get(fieldName, strict = false) {
     if (typeof this._attributes[fieldName] !== 'undefined') {
@@ -300,6 +306,7 @@ export default class Entity {
    *
    * @param {string} fieldName
    * @param {any} fieldValue
+   * @param {boolean} strict     default: false
    */
   set(fieldName, fieldValue, strict = false) {
     if (this._attributes[fieldName]) {
@@ -331,7 +338,7 @@ export default class Entity {
   }
 
   /**
-   * Get an expanded representation of a related entity.
+   * Get an expanded representation of a relationship.
    *
    * @param {string} fieldName
    */
@@ -419,7 +426,7 @@ export default class Entity {
    */
   save() {
     return GlobalClient.send((
-      (this._enforceNew === true || !this.entityUuid)
+      (this.enforceNew === true || !this.entityUuid)
         ? ({
           url: `/jsonapi/${this.entityType}/${this.entityBundle}`,
           method: 'POST',
