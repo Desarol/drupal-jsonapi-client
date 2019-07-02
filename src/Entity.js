@@ -306,7 +306,6 @@ export default class Entity {
 
   /**
    * Get an expanded representation of a related entity.
-   * Only works for a relationship to a single entity.
    *
    * @param {string} fieldName
    */

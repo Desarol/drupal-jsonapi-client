@@ -101,5 +101,23 @@ describe('Entity', () => {
       },
     }
     expect(await entity.expand('uid')).toMatchSnapshot()
+    Entity.Cache = {}
+  })
+
+  it('should not return malformed relationships when expanding hasMany relationship', async () => {
+    const entity = Entity.FromResponse({
+      id: '',
+      type: '',
+      attributes: {},
+      relationships: {
+        uid: {
+          data: [{
+            id: null,
+            type: null,
+          }],
+        },
+      },
+    })
+    expect((await entity.expand('uid')).length).toEqual(0)
   })
 })
