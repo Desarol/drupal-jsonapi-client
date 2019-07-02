@@ -325,6 +325,25 @@ export default class Entity {
       return Entity.Load(entityType, entityBundle, this._relationships[fieldName].data.id)
     }
 
+    if (
+      this._relationships[fieldName].data
+      && this._relationships[fieldName].data.constructor === Array
+    ) {
+      return Promise.all(
+        this._relationships[fieldName]
+          .data
+          .map((item) => {
+            if (typeof item.type === 'string' && typeof item.id === 'string') {
+              const [entityType, entityBundle] = item.type.split('--')
+              return Entity.Load(entityType, entityBundle, item.id)
+            }
+
+            return null
+          })
+          .filter(promise => !!promise),
+      )
+    }
+
     throw new MalformedEntity(`Related field ${fieldName} doesn't have sufficient information to expand.`)
   }
 
@@ -353,6 +372,16 @@ export default class Entity {
           type: `${fieldValue.entityType}--${fieldValue.entityBundle}`,
           id: fieldValue.entityUuid,
         },
+      }
+    }
+    if (fieldValue.constructor === Array) {
+      if (fieldValue.every(entity => entity instanceof Entity)) {
+        value = {
+          data: fieldValue.map(entity => ({
+            type: `${entity.entityType}--${entity.entityBundle}`,
+            id: entity.entityUuid,
+          })),
+        }
       }
     }
 

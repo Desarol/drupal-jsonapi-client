@@ -92,3 +92,36 @@ Entity {
   "entityUuid": "id",
 }
 `;
+
+exports[`Entity should return an array of entities when expanding a hasMany relationship 1`] = `
+Array [
+  Entity {
+    "_attributes": Object {
+      "name": "Luke Skywalker",
+    },
+    "_changes": Object {
+      "attributes": Object {},
+      "relationships": Object {},
+    },
+    "_enforceNew": false,
+    "_relationships": Object {},
+    "entityBundle": "user",
+    "entityType": "user",
+    "entityUuid": "uuid-1",
+  },
+  Entity {
+    "_attributes": Object {
+      "name": "Darth Vader",
+    },
+    "_changes": Object {
+      "attributes": Object {},
+      "relationships": Object {},
+    },
+    "_enforceNew": false,
+    "_relationships": Object {},
+    "entityBundle": "user",
+    "entityType": "user",
+    "entityUuid": "uuid-2",
+  },
+]
+`;
