@@ -139,8 +139,8 @@ export default class Entity {
     this.entityType = entityType
     this.entityBundle = entityBundle
     this.entityUuid = entityUuid || null
+    this.enforceNew = false
 
-    this._enforceNew = false
     this._attributes = {}
     this._relationships = {}
     this._changes = {
@@ -183,15 +183,8 @@ export default class Entity {
         }
 
         if (!(fieldName in target)) {
-          if (target._attributes[fieldName]) {
-            target.setAttribute(fieldName, value)
-            // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set
-            // Must return true if property was set successfully
-            return true
-          }
-
-          if (target._relationships[fieldName]) {
-            target.setRelationship(fieldName, value)
+          if (target._hasField(fieldName)) {
+            target.set(fieldName, value)
             return true
           }
         }
@@ -255,7 +248,7 @@ export default class Entity {
     return { data: this.getChange(fieldName) }
   }
 
-  _serialize() {
+  _serialize(withId = true) {
     const serialization = {
       data: {
         type: `${this.entityType}--${this.entityBundle}`,
@@ -272,6 +265,10 @@ export default class Entity {
       delete serialization.data.relationships
     }
 
+    if (withId && this.entityUuid) {
+      serialization.data.id = this.entityUuid
+    }
+
     return serialization
   }
 
@@ -286,11 +283,47 @@ export default class Entity {
    * Get field value.
    *
    * @param {string} fieldName
+   * @param {boolean} strict    default: false
    */
-  get(fieldName) {
-    return this._attributes[fieldName] !== undefined
-      ? this._attributes[fieldName]
-      : this._relationships[fieldName]
+  get(fieldName, strict = false) {
+    if (typeof this._attributes[fieldName] !== 'undefined') {
+      return this._attributes[fieldName]
+    }
+
+    if (typeof this._relationships[fieldName] !== 'undefined') {
+      return this._relationships[fieldName]
+    }
+
+    if (strict) {
+      throw new Error(`Failed to find field ${fieldName}.`)
+    }
+
+    return null
+  }
+
+  /**
+   * Set field value.
+   *
+   * @param {string} fieldName
+   * @param {any} fieldValue
+   * @param {boolean} strict     default: false
+   */
+  set(fieldName, fieldValue, strict = false) {
+    if (this._attributes[fieldName]) {
+      this.setAttribute(fieldName, fieldValue)
+      return true
+    }
+
+    if (this._relationships[fieldName]) {
+      this.setRelationship(fieldName, fieldValue)
+      return true
+    }
+
+    if (strict) {
+      throw new Error(`Failed to set ${fieldName} to ${fieldValue}. Field does not exist.`)
+    }
+
+    return false
   }
 
   /**
@@ -305,7 +338,7 @@ export default class Entity {
   }
 
   /**
-   * Get an expanded representation of a related entity.
+   * Get an expanded representation of a relationship.
    *
    * @param {string} fieldName
    */
@@ -389,108 +422,39 @@ export default class Entity {
   }
 
   /**
-   * Take a File and upload it to Drupal.
-   *
-   * @param {string} fieldName
-   * @param {File} file
-   */
-  async _toUploadFileRequest(fieldName, file) {
-    const binary = await new Promise((resolve) => {
-      const fr = new FileReader();
-      fr.onload = (event) => {
-        resolve(event.target.result);
-      };
-      fr.readAsArrayBuffer(file);
-    })
-
-    return this.toUploadBinaryRequest(fieldName, file.name, binary)
-  }
-
-  /**
-   * @deprecated use _toUploadBinaryRequest
-   *
-   * @param {string} fieldName
-   * @param {string} fileName
-   * @param {any} binary
-   */
-  toUploadBinaryRequest(fieldName, fileName, binary) {
-    return {
-      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${fieldName}`,
-      method: 'POST',
-      headers: {
-        ...TypeHeaders,
-        'Content-Type': 'application/octet-stream',
-        'Content-Disposition': `file; filename="${fileName}"`,
-      },
-      data: binary,
-    }
-  }
-
-  _toPostRequest() {
-    return {
-      url: `/jsonapi/${this.entityType}/${this.entityBundle}`,
-      method: 'POST',
-      headers: { ...TypeHeaders },
-      data: JSON.stringify(this._serialize()),
-    }
-  }
-
-  _toPatchRequest() {
-    if (!this.entityUuid) {
-      throw new MalformedEntity('Entity is missing UUID but was used in a PATCH request.')
-    }
-
-    return {
-      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
-      method: 'PATCH',
-      headers: { ...TypeHeaders },
-      data: JSON.stringify(this._serializeChanges()),
-    }
-  }
-
-  /**
-   * Build a request to save the entity.
-   *
-   * This will be either a POST or a PATCH depending on
-   * whether or not this is a new entity.
-   */
-  _toSaveRequest() {
-    return (
-      (this._enforceNew === true || !this.entityUuid)
-        ? this._toPostRequest()
-        : this._toPatchRequest()
-    )
-  }
-
-  /**
    * Save this entity.
    */
   save() {
-    return GlobalClient.send(this._toSaveRequest())
-  }
-
-  /**
-   * Build a request to delete the entity.
-   *
-   * This will return a DELETE request.
-   */
-  _toDeleteRequest() {
-    if (!this.entityUuid) {
-      throw new MalformedEntity('Cannot delete an entity without a UUID.')
-    }
-
-    return {
-      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
-      method: 'DELETE',
-      headers: { ...TypeHeaders },
-    }
+    return GlobalClient.send((
+      (this.enforceNew === true || !this.entityUuid)
+        ? ({
+          url: `/jsonapi/${this.entityType}/${this.entityBundle}`,
+          method: 'POST',
+          headers: { ...TypeHeaders },
+          data: JSON.stringify(this._serialize(false)),
+        })
+        : ({
+          url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
+          method: 'PATCH',
+          headers: { ...TypeHeaders },
+          data: JSON.stringify(this._serializeChanges()),
+        })
+    ))
   }
 
   /**
    * Delete this entity.
    */
   delete() {
-    return GlobalClient.send(this._toDeleteRequest())
+    if (!this.entityUuid) {
+      throw new MalformedEntity('Cannot delete an entity without a UUID.')
+    }
+
+    return GlobalClient.send({
+      url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
+      method: 'DELETE',
+      headers: { ...TypeHeaders },
+    })
   }
 
   /**

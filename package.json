@@ -1,11 +1,11 @@
 {
   "name": "drupal-jsonapi-client",
-  "version": "3.0.7",
+  "version": "3.1.0",
   "description": "Making working with Drupal 8's JSON:API easier, faster and cleaner.",
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "test": "npm run test:only",
+    "test": "npm run build:lib && npm run test:only",
     "test:prod": "npm run test",
     "test:only": "BABEL_ENV=test jest",
     "test:watch": "npm test -- --watch",
