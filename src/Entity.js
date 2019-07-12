@@ -248,7 +248,7 @@ export default class Entity {
     return { data: this.getChange(fieldName) }
   }
 
-  _serialize(withId = false) {
+  _serialize(withId = true) {
     const serialization = {
       data: {
         type: `${this.entityType}--${this.entityBundle}`,
@@ -431,7 +431,7 @@ export default class Entity {
           url: `/jsonapi/${this.entityType}/${this.entityBundle}`,
           method: 'POST',
           headers: { ...TypeHeaders },
-          data: JSON.stringify(this._serialize()),
+          data: JSON.stringify(this._serialize(false)),
         })
         : ({
           url: `/jsonapi/${this.entityType}/${this.entityBundle}/${this.entityUuid}`,
