@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "test": "npm run build:lib && npm run test:only",
+    "test": "npm run build && npm run test:only",
     "test:prod": "npm run test",
     "test:only": "BABEL_ENV=test jest",
     "test:watch": "npm test -- --watch",
