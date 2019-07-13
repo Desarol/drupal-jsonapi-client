@@ -1,5 +1,5 @@
 [![npm downloads](https://img.shields.io/npm/dt/drupal-jsonapi-client.svg?maxAge=2592000)](http://npmjs.com/package/drupal-jsonapi-client)
-[![gzip size](https://img.badgesize.io/https://unpkg.com/drupal-jsonapi-client@3.0.5/lib/Browser.min.js)]()
+[![gzip size](https://img.badgesize.io/https://unpkg.com/drupal-jsonapi-client@3.1.0/lib/Browser.min.js)]()
 [![version](https://img.shields.io/npm/v/drupal-jsonapi-client.svg)]()
 
 # Drupal JSON:API Client
