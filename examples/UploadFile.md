@@ -11,7 +11,6 @@ import { File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
 
 // ...configure GlobalClient
 GlobalClient.baseUrl = 'https://www.example.com'
-GlobalClient.transport = window.fetch.bind(window)
 
 const uploadFileAndCreateArticle = async () => {
   // Find the HTML input
