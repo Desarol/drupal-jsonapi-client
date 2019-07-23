@@ -29,7 +29,7 @@ const uploadFileAndCreateArticle = async () => {
   // Upload the file to Drupal
   const fileEntity = await FileEntity.Upload(
     file,
-    fieldName,
+    fileName,
     entityType,
     entityBundle,
     fieldName
