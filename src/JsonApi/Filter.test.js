@@ -2,7 +2,7 @@
 require('regenerator-runtime/runtime') // eslint-disable-line
 
 import Filter from './Filter'
-import QueryParameters from './QueryParameters';
+import QueryParameters from './QueryParameters'
 
 describe('Filter', () => {
   it('serializes simple filter to a query', () => {

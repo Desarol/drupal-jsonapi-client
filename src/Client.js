@@ -1,3 +1,6 @@
+import OpenApi from './OpenApi/OpenApi'
+import EntityTypeManager from './Entity/EntityTypeManager'
+
 export default class Client {
   constructor({
     transport,
@@ -11,7 +14,12 @@ export default class Client {
     this.authorization = authorization
     this.sendCookies = sendCookies
     this.middleware = middleware
+    this.entityTypeManager = new EntityTypeManager()
     this.user = null
+  }
+
+  async initEntityTypeManager(openApiUrl) {
+    this.entityTypeManager._addEntityStorage(await OpenApi.FetchEntityDefinitions(openApiUrl))
   }
 
   async _fetchCSRFToken() {

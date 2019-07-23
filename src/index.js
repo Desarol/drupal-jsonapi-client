@@ -4,11 +4,10 @@ import 'proxy-polyfill'
 // END: IE11 polyfills
 
 export { default as Client } from './Client'
-export { default as Entity } from './Entity'
-export { default as User } from './User'
-export { default as File } from './FileEntity'
-export { default as Filter } from './Filter'
-export { default as FilterGroup } from './FilterGroup'
-export { default as QueryParameters } from './QueryParameters'
 export { default as GlobalClient } from './GlobalClient'
+
+export { default as Filter } from './JsonApi/Filter'
+export { default as FilterGroup } from './JsonApi/FilterGroup'
+export { default as QueryParameters } from './JsonApi/QueryParameters'
+
 export * from './Error'
