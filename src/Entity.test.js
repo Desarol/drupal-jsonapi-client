@@ -127,4 +127,23 @@ describe('Entity', () => {
     })
     expect((await entity.expand('uid')).length).toEqual(0)
   })
+
+  it('should request the resource with correct resourceVersion parameter', async () => {
+    let request
+    GlobalClient.transport = (inp) => {
+      request = inp; return Promise.resolve({
+        data: {
+          data: {
+            type: 'user--user',
+            attributes: {
+              name: 'Luke Skywalker',
+            },
+          }
+        }
+      })
+    }
+    await Entity.Load('node', 'bundle_name', 'uuid-1', ['field_include'], true, 'rel:working-copy')
+    expect(request).toMatchSnapshot()
+    Entity.Cache = {}
+  })
 })

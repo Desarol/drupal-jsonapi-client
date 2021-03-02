@@ -93,6 +93,18 @@ Entity {
 }
 `;
 
+exports[`Entity should request the resource with correct resourceVersion parameter 1`] = `
+Object {
+  "baseURL": "",
+  "headers": Object {
+    "Accept": "application/vnd.api+json",
+    "Content-Type": "application/vnd.api+json",
+  },
+  "method": "GET",
+  "url": "/jsonapi/node/bundle_name/uuid-1?include=field_include&resourceVersion=rel:working-copy",
+}
+`;
+
 exports[`Entity should return an array of entities when expanding a hasMany relationship 1`] = `
 Array [
   Entity {

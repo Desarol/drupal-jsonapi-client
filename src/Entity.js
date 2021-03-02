@@ -25,6 +25,7 @@ export default class Entity {
    * @param {string} entityUuid
    * @param {string[]} includeRelationships   default = []
    * @param {boolean} refreshCache            default = false
+   * @param {string} resourceVersion          default = ''
    */
   static async Load(
     entityType,
@@ -32,14 +33,22 @@ export default class Entity {
     entityUuid,
     includeRelationships = [],
     refreshCache = false,
+    resourceVersion = '',
   ) {
     if (Entity.Cache[entityUuid] && refreshCache === false) {
       return Entity.FromResponse(Entity.Cache[entityUuid])
     }
 
-    const queryParameters = new QueryParameters([`include=${includeRelationships.join(',')}`])
+    const params = []
+    if (includeRelationships.length > 0) {
+      params.push(`include=${includeRelationships.join(',')}`)
+    }
+    if (resourceVersion !== '') {
+      params.push(`resourceVersion=${resourceVersion}`)
+    }
+    const queryParameters = new QueryParameters(params)
     const response = await GlobalClient.send({
-      url: `/jsonapi/${entityType}/${entityBundle}/${entityUuid}${includeRelationships.length > 0 ? `?${queryParameters.toString()}` : ''}`,
+      url: `/jsonapi/${entityType}/${entityBundle}/${entityUuid}${params.length > 0 ? `?${queryParameters.toString()}` : ''}`,
       method: 'GET',
       headers: TypeHeaders,
     })
