@@ -56,12 +56,13 @@ class Resource {
   }) {
     const [p1, p2] = type.split('--')
 
-    data.type = type
-
     return withMimeType({
       url: `/${p1}/${p2}`,
       method: 'POST',
-      data: JSON.stringify(data),
+      data: JSON.stringify({
+        type,
+        ...data,
+      }),
     })
   }
 
@@ -72,13 +73,14 @@ class Resource {
   }) {
     const [p1, p2] = type.split('--')
 
-    data.id = id
-    data.type = type
-
     return withMimeType({
       url: `/${p1}/${p2}/${id}`,
       method: 'PATCH',
-      data: JSON.stringify(data),
+      data: JSON.stringify({
+        type,
+        id,
+        ...data,
+      }),
     })
   }
 }

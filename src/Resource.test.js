@@ -19,7 +19,7 @@ describe('Resource', () => {
     expect(request).toMatchSnapshot()
   })
 
-  it('generates a valid filters from a .GetList call', () => {
+  it('generates valid filters from a .GetList call', () => {
     const request = Resource.GetList({
       type: 'node--article',
       filter: new Filter({

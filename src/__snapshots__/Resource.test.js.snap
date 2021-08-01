@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Resource generates a valid filters from a .GetList call 1`] = `
-Object {
-  "headers": Object {
-    "Accept": "application/vnd.api+json",
-    "Content-Type": "application/vnd.api+json",
-  },
-  "method": "GET",
-  "url": "/node/article?page[offset]=0&page[limit]=50&filter[1][condition][path]=uid.name&filter[1][condition][value]=foo",
-}
-`;
-
 exports[`Resource generates a valid request from a .Get call 1`] = `
 Object {
   "headers": Object {
@@ -35,7 +24,7 @@ Object {
 
 exports[`Resource generates a valid request from a .New call 1`] = `
 Object {
-  "data": "{\\"attributes\\":{\\"title\\":\\"title\\"},\\"type\\":\\"node--article\\"}",
+  "data": "{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"title\\":\\"title\\"}}",
   "headers": Object {
     "Accept": "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
@@ -47,12 +36,23 @@ Object {
 
 exports[`Resource generates a valid request from a .Update call 1`] = `
 Object {
-  "data": "{\\"attributes\\":{\\"title\\":\\"title\\"},\\"id\\":\\"uuid-1234\\",\\"type\\":\\"node--article\\"}",
+  "data": "{\\"type\\":\\"node--article\\",\\"id\\":\\"uuid-1234\\",\\"attributes\\":{\\"title\\":\\"title\\"}}",
   "headers": Object {
     "Accept": "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
   },
   "method": "PATCH",
   "url": "/node/article/uuid-1234",
+}
+`;
+
+exports[`Resource generates valid filters from a .GetList call 1`] = `
+Object {
+  "headers": Object {
+    "Accept": "application/vnd.api+json",
+    "Content-Type": "application/vnd.api+json",
+  },
+  "method": "GET",
+  "url": "/node/article?page[offset]=0&page[limit]=50&filter[1][condition][path]=uid.name&filter[1][condition][value]=foo",
 }
 `;
