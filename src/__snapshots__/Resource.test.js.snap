@@ -35,11 +35,24 @@ Object {
 
 exports[`Resource generates a valid request from a .New call 1`] = `
 Object {
+  "data": "{\\"attributes\\":{\\"title\\":\\"title\\"},\\"type\\":\\"node--article\\"}",
   "headers": Object {
     "Accept": "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
   },
-  "method": "GET",
-  "url": "/node/article?page[offset]=0&page[limit]=50&filter[1][condition][path]=uid.name&filter[1][condition][value]=foo",
+  "method": "POST",
+  "url": "/node/article",
+}
+`;
+
+exports[`Resource generates a valid request from a .Update call 1`] = `
+Object {
+  "data": "{\\"attributes\\":{\\"title\\":\\"title\\"},\\"id\\":\\"uuid-1234\\",\\"type\\":\\"node--article\\"}",
+  "headers": Object {
+    "Accept": "application/vnd.api+json",
+    "Content-Type": "application/vnd.api+json",
+  },
+  "method": "PATCH",
+  "url": "/node/article/uuid-1234",
 }
 `;

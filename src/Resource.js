@@ -52,13 +52,32 @@ class Resource {
 
   static New({
     type,
-    data,
+    data = {},
   }) {
     const [p1, p2] = type.split('--')
+
+    data.type = type
 
     return withMimeType({
       url: `/${p1}/${p2}`,
       method: 'POST',
+      data: JSON.stringify(data),
+    })
+  }
+
+  static Update({
+    type,
+    id,
+    data = {},
+  }) {
+    const [p1, p2] = type.split('--')
+
+    data.id = id
+    data.type = type
+
+    return withMimeType({
+      url: `/${p1}/${p2}/${id}`,
+      method: 'PATCH',
       data: JSON.stringify(data),
     })
   }

@@ -33,13 +33,27 @@ describe('Resource', () => {
   })
 
   it('generates a valid request from a .New call', () => {
-    const request = Resource.GetList({
+    const request = Resource.New({
       type: 'node--article',
-      filter: new Filter({
-        identifier: '1',
-        path: 'uid.name',
-        value: 'foo',
-      }),
+      data: {
+        attributes: {
+          title: 'title',
+        },
+      },
+    })
+
+    expect(request).toMatchSnapshot()
+  })
+
+  it('generates a valid request from a .Update call', () => {
+    const request = Resource.Update({
+      type: 'node--article',
+      id: 'uuid-1234',
+      data: {
+        attributes: {
+          title: 'title',
+        },
+      },
     })
 
     expect(request).toMatchSnapshot()
