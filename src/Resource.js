@@ -60,8 +60,10 @@ class Resource {
       url: `/${p1}/${p2}`,
       method: 'POST',
       data: JSON.stringify({
-        type,
-        ...data,
+        data: {
+          type,
+          ...data,
+        },
       }),
     })
   }
@@ -77,9 +79,11 @@ class Resource {
       url: `/${p1}/${p2}/${id}`,
       method: 'PATCH',
       data: JSON.stringify({
-        type,
-        id,
-        ...data,
+        data: {
+          type,
+          id,
+          ...data,
+        },
       }),
     })
   }

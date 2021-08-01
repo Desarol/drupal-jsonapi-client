@@ -24,7 +24,7 @@ Object {
 
 exports[`Resource generates a valid request from a .New call 1`] = `
 Object {
-  "data": "{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"title\\":\\"title\\"}}",
+  "data": "{\\"data\\":{\\"type\\":\\"node--article\\",\\"attributes\\":{\\"title\\":\\"title\\"}}}",
   "headers": Object {
     "Accept": "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
@@ -36,7 +36,7 @@ Object {
 
 exports[`Resource generates a valid request from a .Update call 1`] = `
 Object {
-  "data": "{\\"type\\":\\"node--article\\",\\"id\\":\\"uuid-1234\\",\\"attributes\\":{\\"title\\":\\"title\\"}}",
+  "data": "{\\"data\\":{\\"type\\":\\"node--article\\",\\"id\\":\\"uuid-1234\\",\\"attributes\\":{\\"title\\":\\"title\\"}}}",
   "headers": Object {
     "Accept": "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
