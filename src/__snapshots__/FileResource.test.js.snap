@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Resource generates a valid request from a .Get call 1`] = `
+exports[`FileResource generates a valid request from a .New call 1`] = `
 Object {
   "data": Uint8Array [],
   "headers": Object {
