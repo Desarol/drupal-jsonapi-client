@@ -1,5 +1,6 @@
 import Filter from './Filter'
 import Resource from './Resource'
+import Sort from './Sort'
 
 describe('Resource', () => {
   it('generates a valid request from a .Get call', () => {
@@ -26,6 +27,23 @@ describe('Resource', () => {
         identifier: '1',
         path: 'uid.name',
         value: 'foo',
+      }),
+    })
+
+    expect(request).toMatchSnapshot()
+  })
+
+  it('generates valid filters and sort from a .GetList call', () => {
+    const request = Resource.GetList({
+      type: 'node--article',
+      filter: new Filter({
+        identifier: '1',
+        path: 'uid.name',
+        value: 'foo',
+      }),
+      sort: new Sort({
+        identifier: 'sort-created',
+        path: 'created',
       }),
     })
 

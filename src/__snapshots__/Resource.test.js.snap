@@ -46,6 +46,17 @@ Object {
 }
 `;
 
+exports[`Resource generates valid filters and sort from a .GetList call 1`] = `
+Object {
+  "headers": Object {
+    "Accept": "application/vnd.api+json",
+    "Content-Type": "application/vnd.api+json",
+  },
+  "method": "GET",
+  "url": "/node/article?page[offset]=0&page[limit]=50&filter[1][condition][path]=uid.name&filter[1][condition][value]=foo&sort[sort-created][path]=created",
+}
+`;
+
 exports[`Resource generates valid filters from a .GetList call 1`] = `
 Object {
   "headers": Object {
