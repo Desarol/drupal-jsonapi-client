@@ -1,6 +1,3 @@
-/* eslint-disable import/first */
-require('regenerator-runtime/runtime') // eslint-disable-line
-
 import path from 'path'
 import puppeteer from 'puppeteer'
 

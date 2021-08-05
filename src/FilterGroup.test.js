@@ -1,6 +1,3 @@
-/* eslint-disable import/first */
-require('regenerator-runtime/runtime') // eslint-disable-line
-
 import QueryParameters from './QueryParameters'
 import FilterGroup from './FilterGroup'
 import Filter from './Filter'

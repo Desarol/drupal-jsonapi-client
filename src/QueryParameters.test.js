@@ -1,9 +1,6 @@
-/* eslint-disable import/first */
-require('regenerator-runtime/runtime') // eslint-disable-line
-
 import QueryParameters from './QueryParameters'
-import FilterGroup from './FilterGroup';
-import Filter from './Filter';
+import FilterGroup from './FilterGroup'
+import Filter from './Filter'
 
 describe('QueryParameters', () => {
   it('generates valid query string', () => {

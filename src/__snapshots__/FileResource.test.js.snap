@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileResource generates a valid request from a .New call 1`] = `
+Object {
+  "data": Uint8Array [],
+  "headers": Object {
+    "Accept": "application/vnd.api+json",
+    "Content-Disposition": "file; filename=\\"file.jpg\\"",
+    "Content-Type": "application/octet-stream",
+  },
+  "method": "POST",
+  "url": "/node/article/field_image",
+}
+`;
