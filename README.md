@@ -92,8 +92,6 @@ The library works in all modern browsers.
 
 https://netmarketshare.com
 
-We bundle `regenerator-runtime` and `proxy-polyfill` so that the library works out of the box in IE11.
-
 ## Sponsors
 
 [![Desarol](https://user-images.githubusercontent.com/1893118/59728701-c6887e00-9200-11e9-9128-2589d87dca87.png)](https://www.desarol.com)
